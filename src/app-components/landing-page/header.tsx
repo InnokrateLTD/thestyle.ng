@@ -18,7 +18,7 @@ import {
 const Header = () => {
   return (
     <header className="w-full h-[56px] sm:h-[80px] bg-black">
-      <nav className="text-sm font-bold w-[98%] h-full mx-auto text-white flex justify-center sm:justify-between items-center">
+      <div className="text-sm font-bold w-[98%] h-full mx-auto text-white flex justify-center sm:justify-between items-center">
         <ul className="hidden sm:flex items-center gap-2">
           <li>BLOGS</li>
           <li>FAQ</li>
@@ -59,7 +59,7 @@ const Header = () => {
             </DropdownMenu>
           </li>
         </ul>
-      </nav>
+      </div>
     </header>
   );
 };
