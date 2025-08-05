@@ -4,8 +4,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/app-components/ui/dropdown-menu";
 import { ChevronDownIcon, MenuIcon, SearchIcon, HandbagIcon, HeartIcon } from "lucide-react";
