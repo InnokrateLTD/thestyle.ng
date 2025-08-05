@@ -39,6 +39,7 @@ const putData = async <
   return result;
 };
 
+// Patch data
 const patchData = async <
   ResponseType extends AxiosResponse,
   U extends requestConfigType['url'],
