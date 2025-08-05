@@ -1,4 +1,5 @@
 import { Button } from "@/app-components/ui/button";
+import Image from "next/image";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/app-components/ui/dropdown-menu";
 import { ChevronDownIcon, MenuIcon, SearchIcon, HandbagIcon, HeartIcon } from "lucide-react";
+import CategoryImage from "@/assets/category-image.jpg"
 const NavLinks = () => {
   return (
     <nav className="w-full bg-white h-[56px] sm:h-[80px]">
@@ -19,15 +21,16 @@ const NavLinks = () => {
                 <span>SALES</span>
                 <ChevronDownIcon className="w-4 h-4 text-grey" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-70 h-45 rounded-none mt-7">
-                <DropdownMenuLabel className="pt-7 px-3 pb-3">
-                  <Button className="bg-grey w-full h-11 rounded-none">
-                    Login
-                  </Button>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Sign up as a Vendor</DropdownMenuItem>
-                <DropdownMenuItem>Sign Up as a buyer</DropdownMenuItem>
+              <DropdownMenuContent className="w-205 h-177 rounded-none mt-4 ml-4 flex [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                <DropdownMenuItem className="w-77 h-[642px] p-6 flex flex-col items-start justify-start gap-4 font-semibold text-sm bg-grey-light">
+                    <div>CLOTHING</div>
+                    <div>ACCESSORIES</div>
+                    <div>FOOTWEAR</div>
+                    <div>SALE</div>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="w-[448px] h-[642px] mx-auto p-6 flex items-center justify-center focus:bg-transparent">
+                  <Image src={CategoryImage} alt="Category Image" width={448} height={642} className="w-full h-full"/>
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </li>
@@ -37,15 +40,27 @@ const NavLinks = () => {
                 <span>VENDORS</span>
                 <ChevronDownIcon className="w-4 h-4 text-grey" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-70 h-45 rounded-none mt-7">
-                <DropdownMenuLabel className="pt-7 px-3 pb-3">
-                  <Button className="bg-grey w-full h-11 rounded-none">
-                    Login
-                  </Button>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Sign up as a Vendor</DropdownMenuItem>
-                <DropdownMenuItem>Sign Up as a buyer</DropdownMenuItem>
+              <DropdownMenuContent className="w-205 h-177 rounded-none mt-4 ml-4 flex [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                <DropdownMenuItem className="w-77 h-[642px] p-6 flex flex-col items-start justify-start gap-4 font-semibold text-sm bg-grey-light rounded-none m-0">
+                    <div>POPULAR VENDORS</div>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="w-full h-[642px] p-6 flex items-start justify-between text-sm focus:bg-transparent">
+                    {/* <div className=""> */}
+                      <div className="flex flex-col items-start justify-start gap-4 font-medium">
+                      <div>Vendor 1</div>
+                    <div>Vendor 2</div>
+                    <div>Vendor 3</div>
+                    <div>Vendor 4</div>
+                    <div>Vendor 5</div>
+                    <div>Vendor 6</div>
+                    <div>Vendor 7</div>
+                    <div>Vendor 8</div>
+                    <div>Vendor 9</div>
+                    <div>Vendor 10</div>
+                    </div>
+                    <div>View All</div>
+                    {/* </div> */}
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </li>
@@ -55,15 +70,16 @@ const NavLinks = () => {
                 <span>MEN</span>
                 <ChevronDownIcon className="w-4 h-4 text-grey" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-70 h-45 rounded-none mt-7">
-                <DropdownMenuLabel className="pt-7 px-3 pb-3">
-                  <Button className="bg-grey w-full h-11 rounded-none">
-                    Login
-                  </Button>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Sign up as a Vendor</DropdownMenuItem>
-                <DropdownMenuItem>Sign Up as a buyer</DropdownMenuItem>
+              <DropdownMenuContent className="w-205 h-177 rounded-none mt-4 ml-4 flex [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                <DropdownMenuItem className="w-77 h-[642px] p-6 flex flex-col items-start justify-start gap-4 font-semibold text-sm bg-grey-light">
+                    <div>CLOTHING</div>
+                    <div>ACCESSORIES</div>
+                    <div>FOOTWEAR</div>
+                    <div>SALE</div>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="w-[448px] h-[642px] mx-auto p-6 flex items-center justify-center focus:bg-transparent">
+                  <Image src={CategoryImage} alt="Category Image" width={448} height={642} className="w-full h-full"/>
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </li>
@@ -73,15 +89,16 @@ const NavLinks = () => {
                 <span>WOMEN</span>
                 <ChevronDownIcon className="w-4 h-4 text-grey" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-70 h-45 rounded-none mt-7">
-                <DropdownMenuLabel className="pt-7 px-3 pb-3">
-                  <Button className="bg-grey w-full h-11 rounded-none">
-                    Login
-                  </Button>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Sign up as a Vendor</DropdownMenuItem>
-                <DropdownMenuItem>Sign Up as a buyer</DropdownMenuItem>
+              <DropdownMenuContent className="w-205 h-177 rounded-none mt-4 ml-4 flex [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                <DropdownMenuItem className="w-77 h-[642px] p-6 flex flex-col items-start justify-start gap-4 font-semibold text-sm bg-grey-light">
+                    <div>CLOTHING</div>
+                    <div>ACCESSORIES</div>
+                    <div>FOOTWEAR</div>
+                    <div>SALE</div>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="w-[448px] h-[642px] mx-auto p-6 flex items-center justify-center focus:bg-transparent">
+                  <Image src={CategoryImage} alt="Category Image" width={448} height={642} className="w-full h-full"/>
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </li>
