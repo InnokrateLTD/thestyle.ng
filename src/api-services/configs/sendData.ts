@@ -21,6 +21,7 @@ const postData = async <
   return result;
 };
 
+// put data
 const putData = async <
   ResponseType extends AxiosResponse,
   U extends requestConfigType['url'],
