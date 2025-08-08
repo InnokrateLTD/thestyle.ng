@@ -1,5 +1,5 @@
 "use client";
-// import { useState } from "react";
+import { useState } from "react";
 import AppLogo from "./logo";
 import {
   SearchIcon,
@@ -17,13 +17,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/app-components/ui/dropdown-menu";
-// import LoginForm from "@/app-components/landing-page/login-form";
-// import SignupForm from "@/app-components/landing-page/signup-form";
-// import Modal from "@/app-components/landing-page/modal";
+import LoginForm from "@/app-components/landing-page/login-form";
+import SignupForm from "@/app-components/landing-page/signup-form";
+import Modal from "@/app-components/landing-page/modal";
 
 const Header = () => {
-  // const [isLoginFormOpen, setIsLoginFormOpen] = useState(false);
-  // const [isSignupFormOpen, setIsSignupFormOpen] = useState(false);
+  const [isLoginFormOpen, setIsLoginFormOpen] = useState(false);
+  const [isSignupFormOpen, setIsSignupFormOpen] = useState(false);
   return (
     <header className="w-full h-[56px] sm:h-[80px] bg-black">
       <div className="text-sm font-bold w-[98%] h-full mx-auto text-white flex justify-center sm:justify-between items-center">
@@ -56,15 +56,15 @@ const Header = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-70 h-45 rounded-none mt-7">
                 <DropdownMenuLabel className="pt-7 px-3 pb-3">
-                  {/* onClick={() => setIsLoginFormOpen(true)} */}
-                  <Button  className="bg-grey w-full h-11 rounded-none">
+                  
+                  <Button onClick={() => setIsLoginFormOpen(true)}  className="bg-grey w-full h-11 rounded-none">
                     Login
                   </Button>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                {/* onClick={() => setIsSignupFormOpen(true)} */}
-                <DropdownMenuItem>Sign up as a Vendor</DropdownMenuItem>
-                <DropdownMenuItem>Sign Up as a buyer</DropdownMenuItem>
+                
+                <DropdownMenuItem onClick={() => setIsSignupFormOpen(true)}>Sign up as a Vendor</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setIsSignupFormOpen(true)}>Sign Up as a buyer</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </li>
