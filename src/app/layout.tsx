@@ -2,10 +2,8 @@ import type { Metadata } from "next";
 import { inter } from "@/lib/font"
 import "./globals.css";
 
-
-
 export const metadata: Metadata = {
-  title: "The Style Fashion Group",
+  title: "The Style Fashion Groups",
   description: "",
 };
 
