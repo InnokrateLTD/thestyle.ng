@@ -63,12 +63,12 @@ const CarouselContainer = () => {
                 <p className="mb-2">{slide.subtitle}</p>
                 <i className="text-xs mb-6">{slide.description}</i>
                 <div className="flex flex-wrap gap-2 mt-5">
-                    <Button className="bg-grey text-white font-semibold uppercase py-2 px-4 transition w-40 h-12 rounded-none">
+                    <Button className="bg-grey text-white hover:bg-white hover:text-black  font-semibold uppercase py-2 px-4 transition w-40 h-12 rounded-none">
                         {slide.button}
                     </Button>
                     {slide.button2 && 
                     
-                    <Button className="bg-white text-grey font-semibold uppercase py-2 px-4 transition w-40 h-12 rounded-none">
+                    <Button className="bg-white text-grey font-semibold uppercase py-2 px-4 transition w-40 h-12 hover:bg-grey hover:text-white rounded-none">
                         {slide.button2}
                     </Button>
                     }
@@ -77,8 +77,7 @@ const CarouselContainer = () => {
                     <Button className="border border-white text-white bg-transparent font-semibold uppercase py-2 px-4 transition w-40 h-12 rounded-none">
                         {slide.button3}
                     </Button>
-                    }
-                    
+                    }  
                 </div>
                 
               </div>

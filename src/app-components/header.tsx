@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import AppLogo from "./logo";
+import AppLogo from "./landing-page/logo";
 import {
   SearchIcon,
   HeartIcon,
@@ -70,12 +70,12 @@ const Header = () => {
           </li>
         </ul>
       </div>
-      {/* <Modal isOpen={isLoginFormOpen} onClose={() => setIsLoginFormOpen(false)}>
+      <Modal isOpen={isLoginFormOpen} onClose={() => setIsLoginFormOpen(false)}>
           <LoginForm />
       </Modal>
       <Modal isOpen={isSignupFormOpen} onClose={() => setIsSignupFormOpen(false)}>
           <SignupForm />
-      </Modal> */}
+      </Modal>
     </header>
   );
 };

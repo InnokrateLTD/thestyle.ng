@@ -76,7 +76,7 @@ const products = [
   },
 ];
 
-const Products = () => {
+const Products = ({title}: {title: string}) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const handleScrollRight = () => {
@@ -88,7 +88,7 @@ const Products = () => {
   return (
     <section className="px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-bold text-grey">New Arrivals</h2>
+        <h2 className="text-sm font-bold text-grey uppercase">{title}</h2>
         <Button
           variant="ghost"
           className="text-sm text-primary underline hover:no-underline"
@@ -97,7 +97,6 @@ const Products = () => {
           View All <MoveRightIcon className='w-10 h-6'/>
         </Button>
       </div>
-
       <div
         ref={scrollRef}
         className="flex gap-4 overflow-x-auto scroll-smooth pb-2 -mx-2 px-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
