@@ -1,3 +1,4 @@
+"use client"
 import { Button } from "@/app-components/ui/button";
 import Image from "next/image";
 import {
@@ -8,7 +9,9 @@ import {
 } from "@/app-components/ui/dropdown-menu";
 import { ChevronDownIcon, MenuIcon, SearchIcon, HandbagIcon, HeartIcon } from "lucide-react";
 import CategoryImage from "@/assets/category-image.jpg"
+import { useRouter } from "next/navigation";
 const NavLinks = () => {
+  const router = useRouter()
   return (
     <nav className="w-full bg-white h-[56px] sm:h-[80px]">
       <div className="text-sm font-bold w-[98%] h-full mx-auto text-black hidden sm:flex justify-between items-center">
@@ -16,15 +19,15 @@ const NavLinks = () => {
           <li>
             <DropdownMenu>
               <DropdownMenuTrigger className="focus:outline-none cursor-pointer flex items-center gap-1">
-                <span>SALES</span>
+                <span onClick={() => router.push('/products')}>SALES</span>
                 <ChevronDownIcon className="w-4 h-4 text-grey" />
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-205 h-177 rounded-none mt-4 ml-4 flex [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 <DropdownMenuItem className="w-77 h-[642px] p-6 flex flex-col items-start justify-start gap-4 font-semibold text-sm bg-grey-light">
-                    <div>CLOTHING</div>
-                    <div>ACCESSORIES</div>
-                    <div>FOOTWEAR</div>
-                    <div>SALE</div>
+                    <div onClick={() => router.push('/products')}>CLOTHING</div>
+                    <div onClick={() => router.push('/products')}>ACCESSORIES</div>
+                    <div onClick={() => router.push('/products')}>FOOTWEAR</div>
+                    <div onClick={() => router.push('/products')}>SALE</div>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="w-[448px] h-[642px] mx-auto p-6 flex items-center justify-center focus:bg-transparent">
                   <Image src={CategoryImage} alt="Category Image" width={448} height={642} className="w-full h-full"/>
@@ -65,15 +68,15 @@ const NavLinks = () => {
           <li>
             <DropdownMenu>
               <DropdownMenuTrigger className="focus:outline-none cursor-pointer flex items-center gap-1">
-                <span>MEN</span>
+                <span onClick={() => router.push('/products')}>MEN</span>
                 <ChevronDownIcon className="w-4 h-4 text-grey" />
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-205 h-177 rounded-none mt-4 ml-4 flex [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 <DropdownMenuItem className="w-77 h-[642px] p-6 flex flex-col items-start justify-start gap-4 font-semibold text-sm bg-grey-light">
-                    <div>CLOTHING</div>
-                    <div>ACCESSORIES</div>
-                    <div>FOOTWEAR</div>
-                    <div>SALE</div>
+                    <div onClick={() => router.push('/products')}>CLOTHING</div>
+                    <div onClick={() => router.push('/products')}>ACCESSORIES</div>
+                    <div onClick={() => router.push('/products')}>FOOTWEAR</div>
+                    <div onClick={() => router.push('/products')}>SALE</div>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="w-[448px] h-[642px] mx-auto p-6 flex items-center justify-center focus:bg-transparent">
                   <Image src={CategoryImage} alt="Category Image" width={448} height={642} className="w-full h-full"/>
@@ -100,9 +103,9 @@ const NavLinks = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           </li>
-          <li>ACCESSORIES</li>
-          <li>FOOTWEAR</li>
-          <li>JEWELLERY</li>
+          <li onClick={() => router.push('/products')}>ACCESSORIES</li>
+          <li onClick={() => router.push('/products')}>FOOTWEAR</li>
+          <li onClick={() => router.push('/products')}>JEWELLERY</li>
         </ul>
         <Button className="bg-grey rounded-none w-40 h-12">
           START SELLING

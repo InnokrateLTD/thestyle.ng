@@ -4,11 +4,12 @@ import { Card, CardContent } from "@/app-components/ui/card";
 import Image, { StaticImageData } from "next/image";
 import { cn } from "@/lib/utils";
 import { HeartIcon } from "lucide-react";
-
+import { useRouter } from "next/navigation";
 interface ProductCardProps {
   image: StaticImageData;
   title: string;
   description: string;
+  id: number | undefined
   price: number;
   oldPrice?: number;
   badgeText?: string;
@@ -19,13 +20,15 @@ export default function ProductCard({
   image,
   title,
   description,
+  id,
   price,
   oldPrice,
   badgeText,
   badgeColor = "bg-red-100 text-red-600",
 }: ProductCardProps) {
+  const router = useRouter()
   return (
-    <Card className="w-full sm:w-[300px] h-[536px] rounded-none shadow-none border-none transition py-0 group">
+    <Card onClick={() => router.push(`/products/${id}/details`) } className="w-full sm:w-[300px] h-[536px] rounded-none shadow-none border-none transition py-0 group cursor-pointer">
       <div className="relative w-full h-64 sm:h-[420px]">
         <Image src={image} alt={title} fill className="object-cover" />
 
