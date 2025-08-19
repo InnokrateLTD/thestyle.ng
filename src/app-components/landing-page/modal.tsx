@@ -10,10 +10,9 @@ interface ModalProps {
 
 const Modal = ({ isOpen, onClose, children }: ModalProps) => {
   if (!isOpen) return null;
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/5 ">
-      <div className="relative w-full max-w-md max-h-[90vh] overflow-y-auto bg-white rounded-none mx-4 shadow-xl [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+  return  (
+    <div  className="fixed inset-0 z-50 flex items-center justify-center bg-black/5 ">
+      <div  className="relative w-full max-w-md max-h-[90vh] overflow-y-auto bg-white rounded-none mx-4 shadow-xl [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {/* Close button */}
         <Button
           onClick={onClose}

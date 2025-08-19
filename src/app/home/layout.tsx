@@ -1,13 +1,12 @@
-import type { Metadata } from "next";
+
 import { inter } from "@/lib/font"
 import "./globals.css";
-import { Toaster } from "react-hot-toast";
-export const metadata: Metadata = {
-  title: "The Style Fashion Groups",
-  description: "",
-};
+import Header from "@/app-components/header";
+import Footer from "@/app-components/footer";
+import NavLinks from "@/app-components/nav-links";
 
-export default function RootLayout({
+
+export default function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -17,8 +16,10 @@ export default function RootLayout({
       <body
         className={`${inter.className}`}
       >
+        <Header/>
+       <NavLinks/>
         {children}
-        <Toaster/>
+        <Footer/>
       </body>
     </html>
   );

@@ -12,7 +12,7 @@ const postData = async <
 >(
   url: U,
   data?: D,
-  service?: 'pyforensics' | 'admin'
+  service?: 'style-ng' | 'admin'
 ): Promise<ResponseType> => {
   const result = await axiosInstance(service)
     .post(url, data)
@@ -29,7 +29,7 @@ const putData = async <
 >(
   url: U,
   data?: D,
-  service?: 'pyforensics' | 'admin'
+  service?: 'style-ng' | 'admin'
 ): Promise<ResponseType> => {
   const result = await axiosInstance(service)
     .put(url, data)
@@ -47,7 +47,7 @@ const patchData = async <
 >(
   url: U,
   data?: D,
-  service?: 'pyforensics' | 'admin'
+  service?: 'style-ng' | 'admin'
 ): Promise<ResponseType> => {
   const result = await axiosInstance(service)
     .patch(url, data)
@@ -62,7 +62,7 @@ const deleteData = async <
   U extends requestConfigType['url']
 >(
   url: U,
-  service?: 'pyforensics' | 'admin'
+  service?: 'style-ng' | 'admin'
 ): Promise<ResponseType> => {
   const result = await axiosInstance(service)
     .delete(url)
@@ -79,7 +79,7 @@ const postMultipartData = async <
 >(
   url: U,
   data?: D,
-  service?: 'pyforensics' | 'admin'
+  service?: 'style-ng' | 'admin'
 ): Promise<ResponseType> => {
   const result = await axiosInstance(service)
     .post(url, data, {
@@ -100,7 +100,7 @@ export const mutationRequest = <
   url: U,
   type: T,
   data?: D,
-  service?: 'pyforensics' | 'admin'
+  service?: 'style-ng' | 'admin'
 ) => {
   switch (type) {
     case 'post':

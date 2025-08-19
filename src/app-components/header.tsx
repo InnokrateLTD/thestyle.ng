@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 import AppLogo from "./landing-page/logo";
 import {
   SearchIcon,
@@ -19,11 +18,12 @@ import {
 } from "@/app-components/ui/dropdown-menu";
 import LoginForm from "@/app-components/landing-page/login-form";
 import SignupForm from "@/app-components/landing-page/signup-form";
+import VerifyForm from "./landing-page/verify";
 import Modal from "@/app-components/landing-page/modal";
+import { useModalStore } from "@/app-stores/modal";
 
 const Header = () => {
-  const [isLoginFormOpen, setIsLoginFormOpen] = useState(false);
-  const [isSignupFormOpen, setIsSignupFormOpen] = useState(false);
+  const { activeModal, openModal, closeModal } = useModalStore();
   return (
     <header className="w-full h-[56px] sm:h-[80px] bg-black">
       <div className="text-sm font-bold w-[98%] h-full mx-auto text-white flex justify-center sm:justify-between items-center">
@@ -57,24 +57,27 @@ const Header = () => {
               <DropdownMenuContent className="w-70 h-45 rounded-none mt-7">
                 <DropdownMenuLabel className="pt-7 px-3 pb-3">
                   
-                  <Button onClick={() => setIsLoginFormOpen(true)}  className="bg-grey w-full h-11 rounded-none">
+                  <Button onClick={() => openModal('login')}  className="bg-grey w-full h-11 rounded-none">
                     Login
                   </Button>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 
-                <DropdownMenuItem onClick={() => setIsSignupFormOpen(true)}>Sign up as a Vendor</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setIsSignupFormOpen(true)}>Sign Up as a buyer</DropdownMenuItem>
+                <DropdownMenuItem>Sign up as a Vendor</DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer" onClick={() => openModal('signup')}>Sign Up as a buyer</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </li>
         </ul>
       </div>
-      <Modal isOpen={isLoginFormOpen} onClose={() => setIsLoginFormOpen(false)}>
+      <Modal isOpen={activeModal === "login"} onClose={closeModal}>
           <LoginForm />
       </Modal>
-      <Modal isOpen={isSignupFormOpen} onClose={() => setIsSignupFormOpen(false)}>
+      <Modal isOpen={activeModal === "signup"} onClose={closeModal}>
           <SignupForm />
+      </Modal>
+      <Modal isOpen={activeModal === "verify"} onClose={closeModal}>
+          <VerifyForm />
       </Modal>
     </header>
   );
