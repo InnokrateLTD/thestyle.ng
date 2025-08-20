@@ -66,9 +66,16 @@ export const businessInfoSchema = z
         .refine((value) => phoneRegex.test(value), { message: "Invalid phone number format" }),
     state: z.string().min(1, "State is required"),
 });
+
+// Initiate Reset Password
+export const InitiateResetSchema = z.object({
+  email: z.string().email("Invalid email address"),
+});
+
 export type CreatePasswordValues = z.infer<typeof createPasswordSchema>
 export type SignupBuyerFormValues = z.infer<typeof signupBuyerSchema>
 export type SignupVendorFormValues = z.infer<typeof signupVendorSchema>
 export type LoginBuyerFormValues = z.infer<typeof loginBuyerSchema>
 export type verifyFormValues = z.infer<typeof verifySchema>
 export type BusinessInfoValues = z.infer<typeof businessInfoSchema>
+export type InitiateResetValues = z.infer<typeof InitiateResetSchema>

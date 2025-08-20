@@ -23,6 +23,10 @@ import VerifyForm from "./landing-page/verify";
 import VerifyVendorForm from "./vendors/verify";
 import BusinessInfo from "./vendors/businessInfo";
 import CreatePassword from "./vendors/createPassword";
+import InitiatePasswordReset from "./reset-password/initiate";
+import ValidatePasswordCode from "./reset-password/validate";
+import CreateResetPassword from "./reset-password/password";
+import PasswordResetSuccess from "./reset-password/success";
 import Modal from "@/app-components/landing-page/modal";
 import { useModalStore } from "@/app-stores/modal";
 
@@ -94,6 +98,18 @@ const Header = () => {
       </Modal>
       <Modal isOpen={activeModal === "business-setup"} onClose={closeModal}>
           <BusinessInfo />
+      </Modal>
+      <Modal isOpen={activeModal === "initiate"} onClose={closeModal}>
+          <InitiatePasswordReset />
+      </Modal>
+      <Modal isOpen={activeModal === "validate"} onClose={closeModal}>
+          <ValidatePasswordCode />
+      </Modal>
+      <Modal isOpen={activeModal === "reset"} onClose={closeModal}>
+          <CreateResetPassword />
+      </Modal>
+      <Modal isOpen={activeModal === "reset-sucess"} onClose={closeModal}>
+          <PasswordResetSuccess />
       </Modal>
     </header>
   );

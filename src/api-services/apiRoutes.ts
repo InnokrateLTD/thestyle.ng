@@ -8,5 +8,8 @@ export const ApiRoutes = {
     SetupBusinessAcccount: 'vendor/register/setup-account/',
     ResendVerifyEmail: 'auth/resend-verification-code/',
     SocialAuthURL: 'auth/social/auth-url/',
-    GetSocialCallBack: 'auth/social/callback/'
+    GetSocialCallBack: 'auth/social/callback/',
+    InitiateResetPassword: 'auth/password-reset/',
+    ValidatePasswordToken: 'auth/password-reset/validate-token/',
+    ResetPassword: 'auth/password-reset/confirm/'
 }

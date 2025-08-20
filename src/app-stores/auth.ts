@@ -5,7 +5,7 @@ interface StylengAuthStore {
     token: string;
     email: string;
     provider: string;
-    setAuthorizationToken: (token: string) => void
+    setToken: (token: string) => void
     setEmail: (email: string) => void;
     setProvider: (provider: string) => void;
 }
@@ -17,7 +17,7 @@ export const useStylengAuthStore = create<StylengAuthStore>()(
                 token: '',
                 email: '',
                 provider: '',
-                setAuthorizationToken: (token) => set(() => ({ token })),
+                setToken: (token) => set(() => ({ token })),
                 setEmail: (email) => set(() => ({ email })),
                 setProvider: (provider) => set(() => ({ provider})),
             }),

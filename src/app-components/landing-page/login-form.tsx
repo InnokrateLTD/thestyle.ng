@@ -182,9 +182,9 @@ const LoginForm = () => {
 
           <p className="text-sm text-gray-500">
             Forgot password?{" "}
-            <a href="#" className="text-black underline">
+            <span onClick={() => openModal('initiate')} className="text-black underline cursor-pointer">
               Click here
-            </a>
+            </span>
           </p>
 
           <Button className="w-100 h-11 bg-black text-white rounded-none font-medium uppercase">
@@ -196,14 +196,6 @@ const LoginForm = () => {
             <Image src={googleIcon} alt="Google" className="w-4 h-4" />
             Continue with Google
           </Button>
-          {/* <Button className="w-100 h-11 border bg-white text-black hover:bg-transparent rounded-none flex items-center justify-center gap-2 text-sm">
-            <Image src={fbIcon} alt="Facebook" className="w-4 h-4" />
-            Continue with Facebook
-          </Button>
-          <Button className="w-100 h-11 border bg-white text-black hover:bg-transparent rounded-none flex items-center justify-center gap-2 text-sm">
-            <Image src={appleIcon} alt="Apple" className="w-4 h-4" />
-            Continue with Apple
-          </Button> */}
         </div>
       </div>
     </div>

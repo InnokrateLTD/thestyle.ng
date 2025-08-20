@@ -52,3 +52,17 @@ export const getSocialAuthCallBack = async (values: RequestParams): Promise<Axio
     const result = await mutationRequest(ApiRoutes.GetSocialCallBack, "post", values)
     return result
 }
+
+export const initiatePasswordReset = async (values: RequestParams): Promise<AxiosResponse<ApiResponse<LoginResponse>>> =>{
+    const result = await mutationRequest(ApiRoutes.InitiateResetPassword, "post", values)
+    return result
+}
+export const validatePassword = async (values: RequestParams): Promise<AxiosResponse<ApiResponse<LoginResponse>>> =>{
+    const result = await mutationRequest(ApiRoutes.ValidatePasswordToken, "post", values)
+    return result
+}
+
+export const resetPassword = async (values: RequestParams): Promise<AxiosResponse<ApiResponse<LoginResponse>>> =>{
+    const result = await mutationRequest(ApiRoutes.ResetPassword, "post", values)
+    return result
+}
