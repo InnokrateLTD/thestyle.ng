@@ -6,6 +6,7 @@ import { apiRequest } from '@/lib/api';
 
 const fetcher = (url: string) => apiRequest(url, 'GET');
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <SWRConfig

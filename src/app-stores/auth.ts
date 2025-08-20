@@ -3,9 +3,11 @@ import { persist, devtools, createJSONStorage} from "zustand/middleware"
 
 interface StylengAuthStore {
     token: string;
-    email: string
+    email: string;
+    provider: string;
     setAuthorizationToken: (token: string) => void
-    setEmail: (email: string) => void
+    setEmail: (email: string) => void;
+    setProvider: (provider: string) => void;
 }
 
 export const useStylengAuthStore = create<StylengAuthStore>()(
@@ -14,8 +16,10 @@ export const useStylengAuthStore = create<StylengAuthStore>()(
             (set) => ({
                 token: '',
                 email: '',
+                provider: '',
                 setAuthorizationToken: (token) => set(() => ({ token })),
                 setEmail: (email) => set(() => ({ email })),
+                setProvider: (provider) => set(() => ({ provider})),
             }),
             {name: 'StylengAuthStore', storage: createJSONStorage(() => sessionStorage)}
         )

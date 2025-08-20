@@ -22,10 +22,11 @@ import { setCookie } from "cookies-next";
 const SignupForm = () => {
   const {openModal } = useModalStore();
   const closeModal = useModalStore((state) => state.closeModal);
-   const searchParams = useSearchParams();
+  const provider = useStylengAuthStore((state) => state.provider);
+  const searchParams = useSearchParams();
   const [showPassword, setShowPassword] = useState(false);
   const [status, setStatus] = useState<"idle" | "loading">("idle");
-  const { setEmail } = useStylengAuthStore()
+  const { setEmail, setProvider } = useStylengAuthStore()
   const {
     register,
     handleSubmit,
@@ -85,7 +86,8 @@ const SignupForm = () => {
     }
   }
 
-  const getAuthCallback = async(provider: string, code: string) => {
+  const getAuthCallback = async(code: string) => {
+    setProvider(provider)
     const x = {
       provider: provider,
       code: code,
@@ -123,8 +125,9 @@ useEffect(() => {
     const code = searchParams.get("code");
 
     if (code) {
-      getAuthCallback('google', code)
+      getAuthCallback(code)
     }
+    // eslint-disable-next-line
   }, [searchParams]);
   return (
     <div className="w-full flex flex-col">
@@ -268,11 +271,11 @@ useEffect(() => {
             <Image src={googleIcon} alt="Google" className="w-4 h-4" />
             Continue with Google
           </Button>
-          <Button type="button"  variant="ghost" className="w-full h-11 border bg-white text-black flex items-center justify-center gap-2 text-sm">
+          <Button type="button" onClick={() => getSocialAuthLink('facebook')}  variant="ghost" className="w-full h-11 border bg-white text-black flex items-center justify-center gap-2 text-sm">
             <Image src={fbIcon} alt="Facebook" className="w-4 h-4" />
             Continue with Facebook
           </Button>
-          <Button type="button" variant="ghost" className="w-full h-11 border bg-white text-black flex items-center justify-center gap-2 text-sm">
+          <Button type="button" onClick={() => getSocialAuthLink('apple')} variant="ghost" className="w-full h-11 border bg-white text-black flex items-center justify-center gap-2 text-sm">
             <Image src={appleIcon} alt="Apple" className="w-4 h-4" />
             Continue with Apple
           </Button>
