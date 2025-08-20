@@ -271,14 +271,14 @@ useEffect(() => {
             <Image src={googleIcon} alt="Google" className="w-4 h-4" />
             Continue with Google
           </Button>
-          <Button type="button" onClick={() => getSocialAuthLink('facebook')}  variant="ghost" className="w-full h-11 border bg-white text-black flex items-center justify-center gap-2 text-sm">
+          {/* <Button type="button" onClick={() => getSocialAuthLink('facebook')}  variant="ghost" className="w-full h-11 border bg-white text-black flex items-center justify-center gap-2 text-sm">
             <Image src={fbIcon} alt="Facebook" className="w-4 h-4" />
             Continue with Facebook
           </Button>
           <Button type="button" onClick={() => getSocialAuthLink('apple')} variant="ghost" className="w-full h-11 border bg-white text-black flex items-center justify-center gap-2 text-sm">
             <Image src={appleIcon} alt="Apple" className="w-4 h-4" />
             Continue with Apple
-          </Button>
+          </Button> */}
         </div>
 
         <p className="text-[11px] text-gray-500 text-center pt-2">
