@@ -18,7 +18,11 @@ import {
 } from "@/app-components/ui/dropdown-menu";
 import LoginForm from "@/app-components/landing-page/login-form";
 import SignupForm from "@/app-components/landing-page/signup-form";
+import SignupVendorForm from "./vendors/signup";
 import VerifyForm from "./landing-page/verify";
+import VerifyVendorForm from "./vendors/verify";
+import BusinessInfo from "./vendors/businessInfo";
+import CreatePassword from "./vendors/createPassword";
 import Modal from "@/app-components/landing-page/modal";
 import { useModalStore } from "@/app-stores/modal";
 
@@ -63,7 +67,7 @@ const Header = () => {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 
-                <DropdownMenuItem>Sign up as a Vendor</DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer" onClick={() => openModal('signup-vendor')}>Sign up as a Vendor</DropdownMenuItem>
                 <DropdownMenuItem className="cursor-pointer" onClick={() => openModal('signup')}>Sign Up as a buyer</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -76,8 +80,20 @@ const Header = () => {
       <Modal isOpen={activeModal === "signup"} onClose={closeModal}>
           <SignupForm />
       </Modal>
+      <Modal isOpen={activeModal === "signup-vendor"} onClose={closeModal}>
+          <SignupVendorForm />
+      </Modal>
       <Modal isOpen={activeModal === "verify"} onClose={closeModal}>
           <VerifyForm />
+      </Modal>
+      <Modal isOpen={activeModal === "verify-vendor"} onClose={closeModal}>
+          <VerifyVendorForm />
+      </Modal>
+      <Modal isOpen={activeModal === "create-password"} onClose={closeModal}>
+          <CreatePassword />
+      </Modal>
+      <Modal isOpen={activeModal === "business-setup"} onClose={closeModal}>
+          <BusinessInfo />
       </Modal>
     </header>
   );

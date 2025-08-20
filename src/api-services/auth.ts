@@ -10,8 +10,28 @@ export const signupBuyer = async (values: RequestParams): Promise<AxiosResponse<
   return result;
 };
 
+export const signupVendor = async (values: RequestParams): Promise<AxiosResponse<ApiResponse<SignUpResponse>>> => {
+  const result = await mutationRequest(ApiRoutes.RegisterVendor, "post", values);
+  return result;
+};
+
 export const verifyUser = async (values: RequestParams): Promise<AxiosResponse<ApiResponse<null>>> => {
   const result = await mutationRequest(ApiRoutes.VerifyEmail, "post", values);
+  return result;
+};
+
+export const verifyVendor = async (values: RequestParams): Promise<AxiosResponse<ApiResponse<null>>> => {
+  const result = await mutationRequest(ApiRoutes.VerifyVendorEmail, "post", values);
+  return result;
+};
+
+export const createPassword = async (values: RequestParams): Promise<AxiosResponse<ApiResponse<null>>> => {
+  const result = await mutationRequest(ApiRoutes.CreatePassword, "post", values);
+  return result;
+};
+
+export const businessAccSetup = async (values: RequestParams): Promise<AxiosResponse<ApiResponse<null>>> => {
+  const result = await mutationRequest(ApiRoutes.SetupBusinessAcccount, "post", values);
   return result;
 };
 

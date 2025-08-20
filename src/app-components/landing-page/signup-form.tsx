@@ -6,8 +6,6 @@ import { Input } from "@/app-components/ui/input";
 import { Button } from "@/app-components/ui/button";
 import Image from "next/image";
 import googleIcon from "@/assets/google.svg"
-import fbIcon from "@/assets/fb.svg"
-import appleIcon from "@/assets/apple.svg"
 import Link from "next/link";
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from "react-hook-form";
