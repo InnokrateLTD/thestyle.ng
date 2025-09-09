@@ -9,7 +9,20 @@ export const ApiRoutes = {
     ResendVerifyEmail: 'auth/resend-verification-code/',
     SocialAuthURL: 'auth/social/auth-url/',
     GetSocialCallBack: 'auth/social/callback/',
+    RefreshToken: "auth/token/refresh/",
     InitiateResetPassword: 'auth/password-reset/',
     ValidatePasswordToken: 'auth/password-reset/validate-token/',
-    ResetPassword: 'auth/password-reset/confirm/'
+    ResetPassword: 'auth/password-reset/confirm/',
+    GetAllProducts: 'products/list/',
+    GetCategory: 'products/categories/',
+    GetSignedURL: 'misc/cloudinary/get-signed-url/',
+    AddProduct: 'products/add/',
+    SingleProduct: 'products',
+    AddToCart: 'orders/cart/add/',
+    GetUserCart: 'orders/cart/',
+    ClearCart:  'orders/cart/clear/',
+    AddReview: 'products',
+    GetAllReviews: 'products/reviews/',
+    GetSellersReview: 'products/seller/reviews/',
+    GetUserProfile: 'user/profile/'
 }

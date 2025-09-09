@@ -2,15 +2,15 @@
 
 import { Card, CardContent } from "@/app-components/ui/card";
 import Link from "next/link";
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { HeartIcon } from "lucide-react";
 // import { useRouter } from "next/navigation";
 interface ProductCardProps {
-  image: StaticImageData;
+  image: string;
   title: string;
   description: string;
-  id: number | undefined
+  id: string | number | undefined
   price: number;
   oldPrice?: number;
   badgeText?: string;

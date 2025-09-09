@@ -7,7 +7,7 @@ interface Token {
   refresh_token: string;
 }
 
-interface StylengUser {
+export interface StylengUser {
   id: string;
   email: string;
   first_name: string;

@@ -17,7 +17,7 @@ import { useStylengAuthStore } from "@/app-stores/auth";
 import { useSearchParams } from "next/navigation";
 const LoginForm = () => {
   const { openModal } = useModalStore();
-  const { setProvider } = useStylengAuthStore()
+  const { setProvider, setEmail, setPassword, setStylengUser } = useStylengAuthStore()
   const searchParams = useSearchParams()
   const provider = useStylengAuthStore((state) => state.provider);
   const closeModal = useModalStore((state) => state.closeModal);
@@ -37,7 +37,7 @@ const LoginForm = () => {
     const x = {
       email: data.email,
       password: data.password,
-      is_buyer: 1,
+      // is_buyer: 1,
     };
     try {
       const response = await loginBuyer(x);
@@ -46,11 +46,21 @@ const LoginForm = () => {
           maxAge: 60 * 60 * 24,
           path: "/",
         });
+        setCookie("ref", response.data.data.token.refresh_token, {
+          maxAge: 60 * 60 * 24,
+          path: "/",
+        })
+        setStylengUser(response.data.data.user)
         toast.success("Login Successful");
         closeModal();
-        // router.push("/");
       } else {
         toast.error(response?.data.msg);
+        console.log(response?.data.msg.toLowerCase().includes('Suspicious login detected'))
+        if (response?.data.msg.toLowerCase().includes('suspicious login detected')){
+          setEmail(data.email)
+          setPassword(data.password)
+          openModal('verify-suspicious-login')
+        }
       }
     } catch (error) {
       toast.error(`Registration error: ${error}`);
@@ -127,7 +137,7 @@ const LoginForm = () => {
             >
               Sign up as a buyer
             </span>{" "}
-            or <span className="text-black underline">Sign up as a vendor</span>
+            or <span onClick={() => openModal("signup-vendor")} className="text-black underline cursor-pointer">Sign up as a vendor</span>
           </p>
         </div>
 

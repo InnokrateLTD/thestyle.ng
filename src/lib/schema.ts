@@ -72,6 +72,51 @@ export const InitiateResetSchema = z.object({
   email: z.string().email("Invalid email address"),
 });
 
+// Create Product
+export const AddProductSchema = z.object({
+  name: z.string().min(3, "Name must be at least 3 characters"),
+  short_description: z.string().min(5, "Short description is required"),
+  description: z.string().min(10, "Description is required"),
+  category: z.string().min(1, "Invalid category ID"),
+  available_sizes: z.array(
+    z.enum(["XS", "S", "M", "L", "XL", "XXL"], {
+      message: "Invalid size" 
+    })
+  ).min(1, "At least one size must be selected"),
+  gender: z.enum(["UNISEX", "MEN", "WOMEN"], {
+    message: "Gender must be UNISEX, MEN, or WOMEN"
+  }),
+  available_colors: z
+  .array(
+    z.string().regex(/^#([0-9A-F]{3}){1,2}$/i, "Invalid color")
+  )
+  .min(1, "At least one color must be selected"),
+  price: z.string().regex(/^\d+(\.\d{1,2})?$/, "Invalid price"),
+  discount_type: z.enum(["PERCENTAGE", "FIXED"], {
+   message: "Discount type must be PERCENTAGE or FIXED",
+  }),
+  discount_value: z.string().regex(/^\d+(\.\d{1,2})?$/, "Invalid discount value"),
+  // is_active: z.boolean(),
+  low_stock_threshold: z.string().min(1, "Threshold must be at least 1"),
+  stock_items: z.array(
+    z.object({
+      size: z.enum(["XS", "S", "M", "L", "XL", "XXL"]),
+      color: z.string().regex(/^#([0-9A-F]{3}){1,2}$/i, "Invalid color"),
+      stock_quantity: z.number().min(0, "Stock cannot be negative"),
+    })
+  ),
+});
+
+// Create Review
+export const CreateReviewSchema = z.object({
+  rating: z.number().min(1, "Please give at least 1 star"),
+  recommend: z.enum(["Yes", "No"]).refine((val) => !!val, {
+    message: "Please select"
+  }),
+  nickname: z.string().optional(),
+  review_description: z.string().optional(),
+  review_text: z.string().optional()
+})
 export type CreatePasswordValues = z.infer<typeof createPasswordSchema>
 export type SignupBuyerFormValues = z.infer<typeof signupBuyerSchema>
 export type SignupVendorFormValues = z.infer<typeof signupVendorSchema>
@@ -79,3 +124,5 @@ export type LoginBuyerFormValues = z.infer<typeof loginBuyerSchema>
 export type verifyFormValues = z.infer<typeof verifySchema>
 export type BusinessInfoValues = z.infer<typeof businessInfoSchema>
 export type InitiateResetValues = z.infer<typeof InitiateResetSchema>
+export type ProductFormData = z.infer<typeof AddProductSchema>;
+export type ReviewFormData = z.infer<typeof CreateReviewSchema>

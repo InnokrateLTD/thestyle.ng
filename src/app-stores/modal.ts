@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist, devtools, createJSONStorage } from "zustand/middleware";
 
-type ModalType = "login" | "signup"  | "verify" | "signup-vendor" | "verify-vendor" | "create-password" | "business-setup" | "initiate" | "validate" | "reset" | "reset-sucess" | null;
+type ModalType = "login" | "signup"  | "verify" | "verify-suspicious-login"  | "signup-vendor" | "verify-vendor" | "create-password" | "business-setup" | "initiate" | "validate" | "reset" | "reset-sucess" | "cart" | "review" | null;
 
 type ModalStore = {
   activeModal: ModalType;

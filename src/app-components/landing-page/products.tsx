@@ -2,96 +2,14 @@
 
 import React, { useRef } from 'react';
 import ProductCard from './product-card';
-import Product1 from '@/assets/product-1.jpg';
-import Product2 from '@/assets/product-2.jpg';
-import Product3 from '@/assets/product-3.jpg';
-import Product4 from '@/assets/product-4.jpg';
 import { Button } from '@/app-components/ui/button';
 import { MoveRightIcon } from "lucide-react"
 import { useRouter } from 'next/navigation';
+import { ProductResponse } from '@/interfaces-and-types/product';
 
-const products = [
-  {
-    image: Product1,
-    title: 'Sneakers',
-    description: 'Classic white sneakers',
-    price: 10500,
-    id: 1,
-    // oldPrice: 18500,
-    // badgeText: '20% off',
-  },
-  {
-    image: Product2,
-    title: 'Poncho',
-    description: 'Waterproof poncho jacket',
-    id: 1,
-    price: 8000,
-    oldPrice: 10000,
-    badgeText: 'New',
-  },
-  {
-    image: Product3,
-    title: 'Backpack',
-    id: 1,
-    description: 'Durable travel backpack',
-    price: 15000,
-    // oldPrice: 19000,
-    // badgeText: 'Hot',
-  },
-  {
-    image: Product4,
-    title: 'Watch',
-    id: 1,
-    description: 'Luxury wristwatch',
-    price: 35000,
-    // oldPrice: 42000,
-    // badgeText: '15% off',
-  },
-  {
-    image: Product1,
-    title: 'Watch',
-    id: 1,
-    description: 'Luxury wristwatch',
-    price: 35000,
-    // oldPrice: 42000,
-    // badgeText: '15% off',
-  },
-  {
-    image: Product2,
-    title: 'Watch',
-    description: 'Luxury wristwatch',
-    price: 35000,
-    // oldPrice: 42000,
-    // badgeText: '15% off',
-  },
-  {
-    image: Product3,
-    title: 'Watch',
-    id: 1,
-    description: 'Luxury wristwatch',
-    price: 35000,
-    oldPrice: 42000,
-    badgeText: '15% off',
-  },
-  {
-    image: Product4,
-    title: 'Watch',
-    description: 'Luxury wristwatch',
-    price: 35000,
-    // oldPrice: 42000,
-    // badgeText: '15% off',
-  },
-];
-
-const Products = ({title}: {title: string}) => {
+const Products = ({title, products, link}: {title: string, products: ProductResponse[], link: string}) => {
   const router = useRouter()
   const scrollRef = useRef<HTMLDivElement>(null);
-
-  // const handleScrollRight = () => {
-  //   if (scrollRef.current) {
-  //     scrollRef.current.scrollBy({ left: 300, behavior: 'smooth' });
-  //   }
-  // };
 
   return (
     <section className="px-4 sm:px-6 lg:px-8 py-8 space-y-6">
@@ -100,7 +18,7 @@ const Products = ({title}: {title: string}) => {
         <Button
           variant="ghost"
           className="text-sm text-primary underline hover:no-underline"
-          onClick={() => router.push('/products')}
+          onClick={() => router.push(`/products/${link}`)}
         >
           View All <MoveRightIcon className='w-10 h-6'/>
         </Button>
@@ -109,18 +27,18 @@ const Products = ({title}: {title: string}) => {
         ref={scrollRef}
         className="flex gap-4 overflow-x-auto scroll-smooth pb-2 -mx-2 px-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
-        {products.map((product, index) => (
+        {products && products.map((product, index) => (
           <div
             key={index}
             className="min-w-[250px] sm:min-w-[300px] flex-shrink-0"
           >
             <ProductCard
-              image={product.image}
-              title={product.title}
-              description={product.description}
-              price={product.price}
-              oldPrice={product?.oldPrice}
-              badgeText={product?.badgeText}
+              image={product.main_image}
+              title={product.name}
+              description={product.short_description}
+              price={Number(product.discounted_price)}
+              oldPrice={Number(product?.price)}
+              badgeText={product?.stock_status}
               id={product.id}
             />
           </div>

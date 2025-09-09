@@ -27,6 +27,9 @@ import InitiatePasswordReset from "./reset-password/initiate";
 import ValidatePasswordCode from "./reset-password/validate";
 import CreateResetPassword from "./reset-password/password";
 import PasswordResetSuccess from "./reset-password/success";
+import VerifySuspiciousForm from "./landing-page/verify-suspicious-login";
+import ReviewProduct from "./product-page/review-product";
+import Cart from "./addToCart";
 import Modal from "@/app-components/landing-page/modal";
 import { useModalStore } from "@/app-stores/modal";
 
@@ -47,7 +50,7 @@ const Header = () => {
           <li className="border-[1.5px] border-white w-7.5 h-7.5 flex items-center justify-center rounded-full">
             <HeartIcon className="w-5 h-5" />
           </li>
-          <li className="border-[1.5px] border-white w-7.5 h-7.5 flex items-center justify-center rounded-full">
+          <li onClick={() => openModal('cart')} className="cursor-pointer border-[1.5px] border-white w-7.5 h-7.5 flex items-center justify-center rounded-full">
             <HandbagIcon className="w-5 h-5" />
           </li>
           <li className="flex items-center gap-1">
@@ -110,6 +113,15 @@ const Header = () => {
       </Modal>
       <Modal isOpen={activeModal === "reset-sucess"} onClose={closeModal}>
           <PasswordResetSuccess />
+      </Modal>
+      <Modal isOpen={activeModal === "verify-suspicious-login"} onClose={closeModal}>
+          <VerifySuspiciousForm />
+      </Modal>
+      <Modal isOpen={activeModal === "cart"} onClose={closeModal}>
+          <Cart />
+      </Modal>
+      <Modal isOpen={activeModal === "review"} onClose={closeModal}>
+          <ReviewProduct />
       </Modal>
     </header>
   );

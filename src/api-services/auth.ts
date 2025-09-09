@@ -44,6 +44,11 @@ export const loginBuyer = async (values: RequestParams): Promise<AxiosResponse<A
   const result = await mutationRequest(ApiRoutes.LoginBuyer, "post", values);
   return result;
 };
+
+export const refreshToken = async (values: RequestParams): Promise<AxiosResponse<ApiResponse<LoginResponse>>> => {
+  const result = await mutationRequest(ApiRoutes.RefreshToken, "post", values);
+  return result;
+};
 export const getSocialAuthURL = async (values: RequestParams): Promise<AxiosResponse<ApiResponse<AuthProviderResponse>>> =>{
     const result = await mutationRequest(ApiRoutes.SocialAuthURL, "post", values)
     return result
