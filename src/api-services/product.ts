@@ -5,7 +5,7 @@ import { ApiResponse, RequestParams } from "@/interfaces-and-types";
 import { AxiosResponse } from "axios";
 import qs from "query-string";
 import { ApiRoutes } from "./apiRoutes";
-import { Category, SignedURL, ProductResult, SingleProduct, ProductParams} from "@/interfaces-and-types/product";
+import { Category, SignedURL, ProductResult, SingleProduct, ProductParams, ProductReviewResponse} from "@/interfaces-and-types/product";
 
 
 
@@ -61,6 +61,22 @@ export const addProductToCart = async (values: RequestParams): Promise<AxiosResp
   return result;
 };
 
+export const getUserCart = (service: string = "style-ng") => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const swr = useSwr<ApiResponse<SingleProduct>>(
+    ApiRoutes.GetUserCart,
+    (url: string) => fetcher(url, service)
+  );
+
+  return {
+    resultIsLoading: swr.isLoading,
+    resultMutate: swr.mutate,
+    result: swr.data?.data ?? null,
+  };
+}
+export async function fetchUserCart(service: string = "style-ng") {
+  return fetcher(ApiRoutes.GetUserCart, service);
+}
 export const getSignedURL = async (): Promise<AxiosResponse<ApiResponse<SignedURL>>> => {
   const result = await mutationRequest(ApiRoutes.GetSignedURL, "post");
   return result;
@@ -85,7 +101,7 @@ export const useGetProductReview = (
 ) => {
   const url = `products/${productId}/reviews/?page=${page}&page_size=${page_size}`;
 
-  const swr = useSwr<ApiResponse<ProductResult>>(url, (url: string) =>
+  const swr = useSwr<ApiResponse<ProductReviewResponse>>(url, (url: string) =>
     fetcher(url, service)
   );
 
@@ -94,4 +110,8 @@ export const useGetProductReview = (
     resultMutate: swr.mutate,
     result: swr.data?.data?.results ?? [],
   };
+};
+export const createOrder = async (values: RequestParams): Promise<AxiosResponse<ApiResponse<null>>> => {
+  const result = await mutationRequest(ApiRoutes.CreateOrder, "post", values);
+  return result;
 };

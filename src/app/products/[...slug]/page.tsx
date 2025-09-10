@@ -1,9 +1,8 @@
 "use client";
-import { useState, useMemo } from "react";
-import { useParams } from "next/navigation";
+import { useState, useMemo, useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { useProducts } from "@/api-services/product";
-import { useCategory } from "@/api-services/product";
+import { useProducts, useCategory } from "@/api-services/product";
 import ProductCard from "@/app-components/landing-page/product-card";
 import { Button } from "@/app-components/ui/button";
 import Modal from "@/app-components/landing-page/modal";
@@ -19,64 +18,65 @@ const specialSlugs: Record<string, Partial<ProductParams>> = {
 
 const Products = () => {
   const { slug = [] } = useParams<{ slug: string[] }>();
+  const router = useRouter();
   const { result: categories } = useCategory();
+
+  // redirect if vendors slug is detected
+  useEffect(() => {
+    if (slug[0]?.toLowerCase() === "vendors") {
+      router.push("/products/vendors");
+    }
+  }, [slug, router]);
 
   // derive ProductParams dynamically
   const productParams: ProductParams = useMemo(() => {
-  const data: ProductParams = {};
-  if (!slug || slug.length === 0) return data;
+    const data: ProductParams = {};
+    if (!slug || slug.length === 0) return data;
 
-  // normalize slug values
-  const [first, second] = slug.map((s) => s.toLowerCase());
+    // normalize slug values
+    const [first, second] = slug.map((s) => s.toLowerCase());
 
-  if (slug.length === 1) {
-    // /products/new-arrivals (special)
-    if (specialSlugs[first]) {
-      Object.assign(data, specialSlugs[first]);
-    } 
-    // /products/men → treat as category
-    else {
-      const cat = categories?.find(
-        (c) => c.name.toLowerCase() === first
-      );
-      if (cat) {
-        data.category = cat.id;
-      } else {
-        data.category_name = first;
+    if (slug.length === 1) {
+      // /products/new-arrivals (special)
+      if (specialSlugs[first]) {
+        Object.assign(data, specialSlugs[first]);
+      } 
+      // /products/men → treat as category
+      else {
+        const cat = categories?.find((c) => c.name.toLowerCase() === first);
+        if (cat) {
+          data.category = cat.id;
+        } else {
+          data.category_name = first;
+        }
       }
     }
-  }
 
-  if (slug.length === 2) {
-    // /products/men/jewellery → gender + category
-    if (genders.includes(first)) {
-      data.gender = first;
-      const cat = categories?.find(
-        (c) => c.name.toLowerCase() === second
-      );
-      if (cat) {
-        data.category = cat.id;
-      } else {
-        data.category_name = second;
+    if (slug.length === 2) {
+      // /products/men/jewellery → gender + category
+      if (genders.includes(first)) {
+        data.gender = first;
+        const cat = categories?.find((c) => c.name.toLowerCase() === second);
+        if (cat) {
+          data.category = cat.id;
+        } else {
+          data.category_name = second;
+        }
+      }
+      // /products/new-arrivals/jewellery → special + category
+      else if (specialSlugs[first]) {
+        Object.assign(data, specialSlugs[first]);
+        const cat = categories?.find((c) => c.name.toLowerCase() === second);
+        if (cat) {
+          data.category = cat.id;
+        } else {
+          data.category_name = second;
+        }
       }
     }
-    // /products/new-arrivals/jewellery → special + category
-    else if (specialSlugs[first]) {
-      Object.assign(data, specialSlugs[first]);
-      const cat = categories?.find(
-        (c) => c.name.toLowerCase() === second
-      );
-      if (cat) {
-        data.category = cat.id;
-      } else {
-        data.category_name = second;
-      }
-    }
-  }
 
-  return data;
-}, [slug, categories]);
-
+    return data;
+  }, [slug, categories]);
 
   const { resultIsLoading, result: products } = useProducts(productParams);
 
@@ -85,10 +85,13 @@ const Products = () => {
 
   // build breadcrumb
   const breadcrumb = useMemo(() => {
-    if (!slug || slug.length === 0) return [{ label: "Products", href: "/product" }];
+    if (!slug || slug.length === 0)
+      return [{ label: "Products", href: "/products" }];
 
     return slug.map((s, i) => {
-      const label = s.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+      const label = s
+        .replace(/-/g, " ")
+        .replace(/\b\w/g, (c) => c.toUpperCase());
       const href = "/products/" + slug.slice(0, i + 1).join("/");
       return { label, href };
     });

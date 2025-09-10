@@ -85,3 +85,15 @@ export type ProductParams = {
   is_special_offer?: boolean;
   is_new_arrival?: boolean;
 };
+
+export interface ProductReview{
+    id: string
+    name: string
+    rating: number
+    product_name: string
+    review_text: string
+    date_posted: string
+}
+export interface ProductReviewResponse{
+    results: ProductReview[]
+}

@@ -18,11 +18,12 @@ export const ApiRoutes = {
     GetSignedURL: 'misc/cloudinary/get-signed-url/',
     AddProduct: 'products/add/',
     SingleProduct: 'products',
-    AddToCart: 'orders/cart/add/',
+    AddToCart: 'orders/cart/bulk-add/',
     GetUserCart: 'orders/cart/',
     ClearCart:  'orders/cart/clear/',
     AddReview: 'products',
     GetAllReviews: 'products/reviews/',
     GetSellersReview: 'products/seller/reviews/',
-    GetUserProfile: 'user/profile/'
+    GetUserProfile: 'user/profile/',
+    CreateOrder: 'orders/create/'
 }

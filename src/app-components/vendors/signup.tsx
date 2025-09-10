@@ -19,13 +19,15 @@ import LoadingDots from "../ui/loadingDots";
 import { useModalStore } from "@/app-stores/modal";
 import { useSearchParams } from "next/navigation";
 import { setCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
 const SignupVendorForm = () => {
   const { openModal } = useModalStore();
   const closeModal = useModalStore((state) => state.closeModal);
   const provider = useStylengAuthStore((state) => state.provider);
+  const router = useRouter()
   const searchParams = useSearchParams();
   const [status, setStatus] = useState<"idle" | "loading">("idle");
-  const { setEmail, setProvider } = useStylengAuthStore();
+  const { setEmail, setProvider, setIsLoggedIn, setStylengUser } = useStylengAuthStore();
   const {
     register,
     handleSubmit,
@@ -92,6 +94,16 @@ const SignupVendorForm = () => {
           maxAge: 60 * 60 * 24,
           path: "/",
         });
+        setCookie("ref", response.data.data.token.refresh_token);
+        setIsLoggedIn(true)
+        setStylengUser(response.data.data.user);
+        const loginRedirectedFromUrl = localStorage.getItem('loginRedirectedFromUrl')
+        localStorage.removeItem('loginRedirectedFromUrl')
+        if (loginRedirectedFromUrl){
+          router.push(loginRedirectedFromUrl)
+        } else {
+          router.push('/')
+        }
         closeModal();
         toast.success(response.data.msg);
       } else {

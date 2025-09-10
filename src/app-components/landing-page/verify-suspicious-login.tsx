@@ -11,10 +11,12 @@ import { loginBuyer } from "@/api-services/auth";
 import { setCookie } from "cookies-next";
 import LoadingDots from "../ui/loadingDots";
 import { useModalStore } from "@/app-stores/modal";
+import { useRouter } from "next/navigation";
 
 const VerifySuspiciousForm = () => {
   const closeModal = useModalStore((state) => state.closeModal);
-  const { email, password } = useStylengAuthStore();
+  const { email, password, setIsLoggedIn, setStylengUser} = useStylengAuthStore();
+  const router = useRouter()
   const [status, setStatus] = useState<"idle" | "loading">("idle");
   const {
     register,
@@ -38,6 +40,16 @@ const VerifySuspiciousForm = () => {
           maxAge: 60 * 60 * 24,
           path: "/",
         });
+        setCookie("ref", response.data.data.token.refresh_token);
+        setIsLoggedIn(true)
+        setStylengUser(response.data.data.user);
+        const loginRedirectedFromUrl = localStorage.getItem('loginRedirectedFromUrl')
+        localStorage.removeItem('loginRedirectedFromUrl')
+        if (loginRedirectedFromUrl){
+          router.push(loginRedirectedFromUrl)
+        } else {
+          router.push('/')
+        }
         toast.success("Login Successful");
         closeModal();
       } else {

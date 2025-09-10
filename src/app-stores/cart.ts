@@ -1,8 +1,9 @@
 import { create } from "zustand";
 import { persist, devtools, createJSONStorage } from "zustand/middleware";
+import { addProductToCart, fetchUserCart } from "@/api-services/product";
 
 type CartItem = {
-  product_id: string;
+  product_id: string | number;
   slug_id: string;
   name: string;
   available_sizes: string[];
@@ -21,10 +22,14 @@ type CartState = {
   size: string;
   setSize: (size: string) => void;
   addToCart: (item: Omit<CartItem, "quantity">) => void;
-  removeFromCart: (id: string) => void;
-  increaseQuantity: (id: string) => void;
-  decreaseQuantity: (id: string) => void;
+  removeFromCart: (id: string | number) => void;
+  increaseQuantity: (id: string | number) => void;
+  decreaseQuantity: (id: string | number) => void;
   clearCart: () => void;
+
+  // Backend
+  setCart: (items: CartItem[]) => void;
+  syncWithBackend: () => Promise<void>;
 };
 
 export const useCartStore = create<CartState>()(
@@ -39,7 +44,7 @@ export const useCartStore = create<CartState>()(
           );
 
           const totalPrice = items.reduce((acc, item) => {
-            const effectivePrice = item.discounted_price
+            const effectivePrice = item.discounted_price;
             //   item.discounted_price && item.discounted_price > 0
             //     ? item.discounted_price
             //     : item.price;
@@ -53,16 +58,20 @@ export const useCartStore = create<CartState>()(
           items: [],
           totalItems: 0,
           totalPrice: 0,
-          size: '',
+          size: "",
           setSize: (size) => set({ size }),
           addToCart: (item) => {
             const { items } = get();
-            const existing = items.find((i) => i.product_id === item.product_id);
+            const existing = items.find(
+              (i) => i.product_id === item.product_id
+            );
 
             if (existing) {
               if (existing.quantity < existing.total_stock) {
                 const updated = items.map((i) =>
-                  i.product_id === item.product_id ? { ...i, quantity: i.quantity + 1 } : i
+                  i.product_id === item.product_id
+                    ? { ...i, quantity: i.quantity + 1 }
+                    : i
                 );
                 set(updateTotals(updated));
               }
@@ -102,6 +111,24 @@ export const useCartStore = create<CartState>()(
           },
 
           clearCart: () => set({ items: [], totalItems: 0, totalPrice: 0 }),
+
+          // Backend
+          setCart: (items) => set({ items }),
+          syncWithBackend: async () => {
+            try {
+              const localCart = get().items;
+              await addProductToCart({ items: localCart });
+
+              const response = await fetchUserCart();
+              console.log(response.data.cart_data.items, 'response')
+
+              // if (response.data.cart_data.items.length !== 0){
+              //   set({ items: response.data.cart_data.items });
+              // }
+            } catch (error) {
+              console.error("Cart sync failed", error);
+            }
+          },
         };
       },
       {

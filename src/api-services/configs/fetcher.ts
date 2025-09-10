@@ -1,6 +1,11 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
-import { getCookie, setCookie } from 'cookies-next'
+import { getCookie, setCookie, deleteCookie} from 'cookies-next'
 import { refreshToken } from "../auth";
+import { useStylengAuthStore } from "@/app-stores/auth";
+import { useModalStore } from "@/app-stores/modal";
+
+const { setIsLoggedIn, setStylengUser } = useStylengAuthStore.getState()
+const {openModal} = useModalStore.getState()
 export const axiosInstance = (service: string = "style-ng") => {
   const isStyleNg = service === "style-ng";
 
@@ -30,29 +35,32 @@ export const axiosInstance = (service: string = "style-ng") => {
       const originalRequest: any = error.config;
 
       if (error.response?.status === 401 && !originalRequest._retry) {
+        setIsLoggedIn(false)
+        deleteCookie("SNG_A");
         originalRequest._retry = true;
-
+        localStorage.setItem('loginRedirectedFromUrl', location.pathname + location.search)
         try {
           const refresh_token = getCookie("ref");
           if (!refresh_token) {
-            window.location.href = isStyleNg ? "/" : "/admin-login";
-            return Promise.reject(error);
+            openModal('login')
           }
 
           // Call refresh token API
           const response =
-            await refreshToken({ refreshToken: refresh_token });
+            await refreshToken({ refresh_token: refresh_token });
 
           // Save new tokens
           setCookie(isStyleNg ? "SNG_A" : "PY_AD", response.data.data.token.access_token);
           setCookie("ref", response.data.data.token.refresh_token);
-
+          setIsLoggedIn(true)
+          setStylengUser(response.data.data.user);
           // Update Authorization header and retry original request
           originalRequest.headers["Authorization"] = `Bearer ${response.data.data.token.access_token}`;
           return instance(originalRequest);
         } catch (err) {
+          openModal("login")
           // Refresh failed → redirect to login
-          window.location.href = isStyleNg ? "/" : "/admin-login";
+          // window.location.href = isStyleNg ? "/" : "/admin-login";
           return Promise.reject(err);
         }
       }

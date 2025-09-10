@@ -5,6 +5,15 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+export function formatDate(dateString: string | Date) {
+  const date = new Date(dateString);
+
+  return date.toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric", 
+    year: "numeric", 
+  });
+}
 export const formatAmount = (price: string | number | undefined) => {
   if (price) {
     const str = price.toString().split(".");

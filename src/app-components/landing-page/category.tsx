@@ -1,8 +1,4 @@
 import Image from "next/image";
-import Product1 from "@/assets/product-1.jpg";
-import Product2 from "@/assets/product-2.jpg";
-import Product3 from "@/assets/product-3.jpg";
-import Product4 from "@/assets/product-4.jpg";
 import Link from "next/link";
 const Categories = () => {
   return (
@@ -14,8 +10,10 @@ const Categories = () => {
         {/* Men --> */}
         <Link href={'/products/men'} className="relative group" >
           <Image
-            src={Product1}
+            src="/men.jpg"
             alt="Men"
+            width={1000}
+            height={1000}
             className="w-full h-full object-cover rounded-none"
           ></Image>
           <span className="absolute bottom-2 left-2 text-sm font-medium  px-2 py-1">
@@ -26,7 +24,9 @@ const Categories = () => {
         {/* Women --> */}
         <Link href={'/products/women'} className="relative group">
           <Image
-            src={Product2}
+            src="/women.jpg"
+            width={1000}
+            height={1000}
             alt="Women"
             className="w-full h-full object-cover rounded-none"
           ></Image>
@@ -38,8 +38,10 @@ const Categories = () => {
         {/* Kids --> */}
         <Link href={'/products/kids'} className="relative group">
           <Image
-            src={Product3}
+            src="/kids.jpg"
             alt="Kids"
+            width={1000}
+            height={1000}
             className="w-full h-full object-cover rounded-none"
           ></Image>
           <span className="absolute bottom-2 left-2 text-sm font-medium px-2 py-1">
@@ -50,8 +52,10 @@ const Categories = () => {
         {/* Footwear --> */}
         <Link href={'/products/footwear'} className="relative group">
           <Image
-            src={Product4}
+            src="/footwear.jpg"
             alt="Footwear"
+            width={1000}
+            height={1000}
             className="w-full h-full object-cover rounded-none"
           ></Image>
           <span className="absolute bottom-2 left-2 text-sm font-medium px-2 py-1">
@@ -62,8 +66,10 @@ const Categories = () => {
         {/* Accessories --> */}
        <Link href={'/products/accessories'} className="relative group">
           <Image
-            src={Product1}
+            src="/accessories.jpg"
             alt="Accessories"
+            width={1000}
+            height={1000}
             className="w-full h-full object-cover rounded-none"
           ></Image>
           <span className="absolute bottom-2 left-2 text-sm font-medium px-2 py-1">
@@ -74,8 +80,10 @@ const Categories = () => {
         {/* Traditional Attire --> */}
         <Link href={'/products/clothing'} className="relative group">
           <Image
-            src={Product2}
+            src="/clothing.png"
             alt="Traditional Attire"
+            width={1000}
+            height={1000}
             className="w-full h-full object-cover rounded-none"
           ></Image>
           <span className="absolute bottom-2 left-2 text-sm font-medium  px-2 py-1">

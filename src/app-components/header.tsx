@@ -29,7 +29,7 @@ import CreateResetPassword from "./reset-password/password";
 import PasswordResetSuccess from "./reset-password/success";
 import VerifySuspiciousForm from "./landing-page/verify-suspicious-login";
 import ReviewProduct from "./product-page/review-product";
-import Cart from "./addToCart";
+import Cart from "./cart";
 import Modal from "@/app-components/landing-page/modal";
 import { useModalStore } from "@/app-stores/modal";
 

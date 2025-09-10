@@ -22,10 +22,16 @@ const Cart = () => {
     decreaseQuantity,
     totalItems,
     totalPrice,
-    setSize
+    setSize,
+    syncWithBackend
   } = useCartStore();
   const items = useCartStore((state) => state.items);
   const size = useCartStore((state) => state.size)
+
+  const removeProductFromCart = (id: string | number) =>{
+    removeFromCart(id)
+    syncWithBackend()
+  }
   return (
     <div className="w-full">
       <div className="space-y-4 flex flex-col">
@@ -39,7 +45,7 @@ const Cart = () => {
             {items.map((item) => (
               <div key={item.product_id} className="flex gap-3">
                 <Image
-                  src={item.main_image}
+                  src={item?.main_image}
                   alt="product-image"
                   className="object-fit w-1/3"
                   width={219}
@@ -57,7 +63,7 @@ const Cart = () => {
                         <SelectValue placeholder="Please select a size" />
                       </SelectTrigger>
                       <SelectContent>
-                        {item?.available_sizes.map((size, index) => (
+                        {item?.available_sizes && item?.available_sizes?.map((size, index) => (
                           <SelectItem key={index + 1} value={size}>
                             {size}
                           </SelectItem>
@@ -82,7 +88,7 @@ const Cart = () => {
                   <div className="text-gray-900 font-medium text-sm mt-3">
                     ₦{formatAmount(item.discounted_price)} x {item.quantity}
                   </div>
-                  <div onClick={() => removeFromCart(item.product_id)} className="text-gray-500 font-normal text-sm underline text-end cursor-pointer">
+                  <div onClick={() => removeProductFromCart(item.product_id)} className="text-gray-500 font-normal text-sm underline text-end cursor-pointer">
                     Remove
                   </div>
                 </div>

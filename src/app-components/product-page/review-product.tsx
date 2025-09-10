@@ -143,7 +143,7 @@ const ReviewProduct = () => {
             />
             <Textarea
               placeholder="Enter your review"
-              maxLength={4}
+              // maxLength={4}
               {...register("review_text")}
               className="border border-grey-lighter rounded-none focus:outline-none w-100 h-32 text-sm"
             />

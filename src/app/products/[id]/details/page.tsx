@@ -15,24 +15,23 @@ import { useSingleProduct } from "@/api-services/product";
 import { useModalStore } from "@/app-stores/modal";
 import { useCartStore } from "@/app-stores/cart";
 import { formatAmount } from "@/lib/utils";
-import { addProductToCart } from "@/api-services/product";
 import { useGetProductReview } from "@/api-services/product";
-export default function ProductPage() {
+import { useStylengAuthStore } from "@/app-stores/auth";
+import {formatDate} from "@/lib/utils"
+export default function ProductCart() {
   const [, /*size,*/ setSize] = useState("");
   const [page, /*setPage*/] = useState(1)
   const [pageSize, /*setPageSize*/] = useState(10)
+  const { isLoggedIn } = useStylengAuthStore()
   const params = useParams();
   const { openModal } = useModalStore();
-  const { addToCart } = useCartStore();
+  const { addToCart, syncWithBackend } = useCartStore();
   const { result: product } = useSingleProduct(params?.id?.toString() ?? "");
   const {result: reviews} = useGetProductReview(params?.id?.toString() ?? "", page, pageSize)
   
-
-  console.log(reviews, 'reviews')
   const AddProductToCart = async () => {
-    openModal("cart");
     if (product) {
-      const response = await addProductToCart({
+        addToCart({
         product_id: product?.id,
         slug_id: product?.slug_id,
         name: product?.name,
@@ -42,22 +41,14 @@ export default function ProductPage() {
         discount_value: product?.discount_value,
         main_image: product?.main_image,
         total_stock: product?.total_stock,
-        // quantity: 1
       });
-      console.log(response);
-      addToCart({
-        product_id: product?.id,
-        slug_id: product?.slug_id,
-        name: product?.name,
-        available_sizes: product?.available_sizes,
-        price: product?.price,
-        discounted_price: product?.discounted_price,
-        discount_value: product?.discount_value,
-        main_image: product?.main_image,
-        total_stock: product?.total_stock,
-        // quantity: 1
-      });
+
+      
     }
+    if (isLoggedIn){
+      syncWithBackend()
+    }
+    openModal("cart");
   };
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2">
@@ -105,18 +96,29 @@ export default function ProductPage() {
           </div>
 
           <div className="mt-4 space-y-4">
-            <div>
+            {reviews && reviews.map((review) => (
+                <div key={review.id} className="space-y-2">
               <p className="font-semibold">Solid shoe choice and looks slick</p>
               <p className="text-sm text-gray-500">
-                This is a very cool looking shoe...
+                {review.review_text}
               </p>
+              <p className="text-xs text-gray-500">{formatDate(review.date_posted)}</p>
+              <p className="font-semibold">{review.name}</p>
+              <div className="flex">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <svg
+                    key={i}
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill={i < review.rating ? "#141414" : "#d1d5db"}
+                    className="w-5 h-5"
+                  >
+                    <path d="M12 .587l3.668 7.431L24 9.753l-6 5.85 1.417 8.264L12 19.896l-7.417 3.971L6 15.603 0 9.753l8.332-1.735z" />
+                  </svg>
+                ))}
+              </div>
             </div>
-            <div>
-              <p className="font-semibold">Amazing choice and comfort</p>
-              <p className="text-sm text-gray-500">
-                Perfect blend of style and comfort...
-              </p>
-            </div>
+            ))}
           </div>
         </div>
       </div>

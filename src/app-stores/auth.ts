@@ -10,6 +10,8 @@ interface StylengAuthStore {
   provider: string;
   signedURL: SignedURL;
   stylengUser: StylengUser;
+  isLoggedIn: boolean;
+  setIsLoggedIn: (isLoggedIn: boolean) => void;
   setToken: (token: string) => void;
   setEmail: (email: string) => void;
   setSignedURL: (SignedURL: SignedURL) => void;
@@ -26,6 +28,7 @@ export const useStylengAuthStore = create<StylengAuthStore>()(
         email: "",
         provider: "",
         password: "",
+        isLoggedIn: false,
         stylengUser: {
           id: "",
           email: "",
@@ -51,6 +54,7 @@ export const useStylengAuthStore = create<StylengAuthStore>()(
         setEmail: (email) => set(() => ({ email })),
         setPassword: (password) => set(() => ({ password })),
         setProvider: (provider) => set(() => ({ provider })),
+        setIsLoggedIn:(isLoggedIn) => set(() => ({ isLoggedIn})),
       }),
       {
         name: "StylengAuthStore",
