@@ -12,7 +12,7 @@ import {
 } from "@/app-components/ui/select";
 import { useCartStore } from "@/app-stores/cart";
 import { useModalStore } from "@/app-stores/modal";
-
+import { useStylengAuthStore } from "@/app-stores/auth"
 const Cart = () => {
   const router = useRouter()
   const { closeModal } = useModalStore()
@@ -27,10 +27,15 @@ const Cart = () => {
   } = useCartStore();
   const items = useCartStore((state) => state.items);
   const size = useCartStore((state) => state.size)
+  const { isLoggedIn } = useStylengAuthStore()
 
   const removeProductFromCart = (id: string | number) =>{
     removeFromCart(id)
-    syncWithBackend()
+
+    if (isLoggedIn){
+     syncWithBackend('remove', id) 
+    }
+    
   }
   return (
     <div className="w-full">

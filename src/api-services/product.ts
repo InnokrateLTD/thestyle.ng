@@ -9,6 +9,7 @@ import { Category, SignedURL, ProductResult, SingleProduct, ProductParams, Produ
 
 
 
+
 export const useCategory = (service: string = "style-ng") => {
   const swr = useSwr<ApiResponse<Category[]>>(ApiRoutes.GetCategory, (url: string) =>
     fetcher(url, service)
@@ -58,6 +59,11 @@ export const addProducts = async (values: RequestParams): Promise<AxiosResponse<
 };
 export const addProductToCart = async (values: RequestParams): Promise<AxiosResponse<ApiResponse<null>>> => {
   const result = await mutationRequest(ApiRoutes.AddToCart, "post", values);
+  return result;
+};
+
+export const removeProductFromCart = async (id: string | number | undefined): Promise<AxiosResponse<ApiResponse<null>>> => {
+  const result = await mutationRequest(`${ApiRoutes.RemoveFromCart}/${id}`, "delete");
   return result;
 };
 
@@ -111,7 +117,5 @@ export const useGetProductReview = (
     result: swr.data?.data?.results ?? [],
   };
 };
-export const createOrder = async (values: RequestParams): Promise<AxiosResponse<ApiResponse<null>>> => {
-  const result = await mutationRequest(ApiRoutes.CreateOrder, "post", values);
-  return result;
-};
+
+

@@ -42,11 +42,9 @@ export default function ProductCart() {
         main_image: product?.main_image,
         total_stock: product?.total_stock,
       });
-
-      
     }
     if (isLoggedIn){
-      syncWithBackend()
+      syncWithBackend('add')
     }
     openModal("cart");
   };

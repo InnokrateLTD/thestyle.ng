@@ -97,3 +97,16 @@ export interface ProductReview{
 export interface ProductReviewResponse{
     results: ProductReview[]
 }
+
+export interface CartItem {
+  product_id: string | number;
+  slug_id: string;
+  name: string;
+  available_sizes: string[];
+  price: number;
+  discounted_price: number;
+  discount_value: number;
+  main_image: string;
+  total_stock: number;
+  quantity: number;
+};

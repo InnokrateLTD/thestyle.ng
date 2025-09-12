@@ -1,19 +1,8 @@
 import { create } from "zustand";
 import { persist, devtools, createJSONStorage } from "zustand/middleware";
-import { addProductToCart, fetchUserCart } from "@/api-services/product";
+import { addProductToCart, fetchUserCart, removeProductFromCart } from "@/api-services/product";
+import { CartItem } from "@/interfaces-and-types/product";
 
-type CartItem = {
-  product_id: string | number;
-  slug_id: string;
-  name: string;
-  available_sizes: string[];
-  price: number;
-  discounted_price: number;
-  discount_value: number;
-  main_image: string;
-  total_stock: number;
-  quantity: number;
-};
 
 type CartState = {
   items: CartItem[];
@@ -29,7 +18,7 @@ type CartState = {
 
   // Backend
   setCart: (items: CartItem[]) => void;
-  syncWithBackend: () => Promise<void>;
+  syncWithBackend: (type: string, id?: string | number) => Promise<void>;
 };
 
 export const useCartStore = create<CartState>()(
@@ -114,11 +103,14 @@ export const useCartStore = create<CartState>()(
 
           // Backend
           setCart: (items) => set({ items }),
-          syncWithBackend: async () => {
+          syncWithBackend: async (type, id) => {
             try {
               const localCart = get().items;
-              await addProductToCart({ items: localCart });
-
+              if (type === 'add'){
+                await addProductToCart({ items: localCart });
+              } else {
+                await removeProductFromCart(id)
+              }
               const response = await fetchUserCart();
               console.log(response.data.cart_data.items, 'response')
 

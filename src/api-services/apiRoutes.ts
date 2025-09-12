@@ -21,9 +21,11 @@ export const ApiRoutes = {
     AddToCart: 'orders/cart/bulk-add/',
     GetUserCart: 'orders/cart/',
     ClearCart:  'orders/cart/clear/',
+    RemoveFromCart: 'orders/cart/delete-item',
     AddReview: 'products',
     GetAllReviews: 'products/reviews/',
     GetSellersReview: 'products/seller/reviews/',
     GetUserProfile: 'user/profile/',
-    CreateOrder: 'orders/create/'
+    CreateOrder: 'orders/create/',
+    InitializePayment: 'payments/initialize/'
 }

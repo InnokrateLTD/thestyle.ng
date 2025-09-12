@@ -30,16 +30,17 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useStylengAuthStore } from "@/app-stores/auth";
 import { useRouter } from "next/navigation";
-import { createOrder } from "@/api-services/product";
+import { createOrder, initializePayment } from "@/api-services/order";
 import toast from "react-hot-toast";
 export default function CheckoutPage() {
-  const router = useRouter()
-  const { /*totalItems,*/ totalPrice } = useCartStore();
+  const router = useRouter();
+  const { /*totalItems,*/ totalPrice, syncWithBackend } = useCartStore();
   const items = useCartStore((state) => state.items);
   const size = useCartStore((state) => state.size);
-  const email = useStylengAuthStore((state) => state.email)
+  const email = useStylengAuthStore((state) => state.email);
+  const { isLoggedIn } = useStylengAuthStore();
   const [status, setStatus] = useState<"idle" | "loading">("idle");
-  const [deliveryMethod, setDeliveryMethod] = useState('')
+  const [deliveryMethod, setDeliveryMethod] = useState("");
   const {
     register,
     control,
@@ -51,38 +52,46 @@ export default function CheckoutPage() {
     defaultValues: {
       save_address: false,
       delivery_method: "STANDARD",
-      country: ''
+      country: "",
     },
   });
-
   const deliveryFees: Record<string, number> = {
-  STANDARD: 0,
-  PREMIUM: 3000,
-  PICKUP: 0,
-};
-const finalTotal = totalPrice + (deliveryMethod ? deliveryFees[deliveryMethod] : 0);
+    STANDARD: 0,
+    PREMIUM: 3000,
+    PICKUP: 0,
+  };
+  const finalTotal =
+    totalPrice + (deliveryMethod ? deliveryFees[deliveryMethod] : 0);
   const onSubmit = async (data: CreateOrderFormValues) => {
-      setStatus("loading");
-      const x = {
+    setStatus("loading");
+    if (isLoggedIn) {
+      syncWithBackend("add");
+    }
+    const x = {
       address_details: {
         first_name: data.first_name,
-      last_name: data.last_name,
-      address_line: data.address_line,
-      town_city: data.town_city,
-      postcode: "L8G 3Y8",
-      country: data.country,
-      phone_number: data.phone_number
+        last_name: data.last_name,
+        address_line: data.address_line,
+        town_city: data.town_city,
+        postcode: "L8G 3Y8",
+        country: data.country,
+        phone_number: data.phone_number,
       },
       save_address: data.save_address,
       delivery_type: data.delivery_method,
-      delivery_fee: data.delivery_method === 'PREMIUM' ? 3000 : 0,
+      delivery_fee: data.delivery_method === "PREMIUM" ? 3000 : 0,
       promo_code: "ZSZD3FTV",
-      items: items
+      items: items,
     };
     try {
       const response = await createOrder(x);
       if (response.status === 200 || response.status === 201) {
-        console.log(response)
+        const data = {
+          order_id: response.data.data.id,
+          customer_email: email
+        }
+        const res = await initializePayment(data)
+        console.log(res);
       } else {
         toast.error(response?.data.msg);
       }
@@ -91,10 +100,14 @@ const finalTotal = totalPrice + (deliveryMethod ? deliveryFees[deliveryMethod] :
     } finally {
       setStatus("idle");
     }
-    };
+  };
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      <button onClick={() => router.back()} type="button" className="text-sm text-gray-500 hover:underline mb-4">
+      <button
+        onClick={() => router.back()}
+        type="button"
+        className="text-sm text-gray-500 hover:underline mb-4"
+      >
         ← Back
       </button>
 
@@ -116,187 +129,195 @@ const finalTotal = totalPrice + (deliveryMethod ? deliveryFees[deliveryMethod] :
             <p className="text-sm">{email}</p>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
-            <div  className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label>First Name</Label>
-                <Input
-                  placeholder="Enter your first name"
-                  className="h-11 rounded-none"
-                  {...register("first_name")}
-                />
-                {errors.first_name && (
-                  <p className="text-xs text-red-500 mt-1">
-                    {errors.first_name.message}
-                  </p>
-                )}
-              </div>
-              <div className="space-y-2">
-                <Label>Last Name</Label>
-                <Input
-                  placeholder="Enter your last name"
-                  className="h-11 rounded-none"
-                  {...register("last_name")}
-                />
-                {errors.last_name && (
-                  <p className="text-xs text-red-500 mt-1">
-                    {errors.last_name.message}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label>Address</Label>
-              <Input
-                placeholder="Enter your address"
-                className="h-11 rounded-none"
-                {...register("address_line")}
-              />
-              {errors.address_line && (
-                <p className="text-xs text-red-500 mt-1">
-                  {errors.address_line.message}
-                </p>
-              )}
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label>City</Label>
-                <Input
-                  placeholder="Enter your city"
-                  className="h-11 rounded-none"
-                  {...register("town_city")}
-                />
-                {errors.town_city && (
-                  <p className="text-xs text-red-500 mt-1">
-                    {errors.town_city.message}
-                  </p>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <Controller
-                  name="country"
-                  control={control}
-                  rules={{ required: "State is required" }}
-                  render={({ field }) => (
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger className="w-full rounded-none">
-                        <SelectValue placeholder="Please select a state" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="lagos">Lagos</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  )}
-                />
-                {errors.country && (
-                  <p className="text-xs text-red-500 mt-1">
-                    {errors.country.message}
-                  </p>
-                )}
-              </div>
-            </div>
-            <div className="space-y-2">
-              <Label>Phone Number</Label>
-              <Input
-                placeholder="Enter your number"
-                className="h-11 rounded-none"
-                {...register("phone_number")}
-              />
-              {errors.phone_number && (
-                <p className="text-xs text-red-500 mt-1">
-                  {errors.phone_number.message}
-                </p>
-              )}
-            </div>
-
-            <Controller
-              name="save_address"
-              control={control}
-              render={({ field }) => (
-                <div className="flex gap-2 items-center">
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>First Name</Label>
+                  <Input
+                    placeholder="Enter your first name"
+                    className="h-11 rounded-none"
+                    {...register("first_name")}
                   />
-                  <p className="text-sm">
-                    Save address and contact information for future orders
-                  </p>
+                  {errors.first_name && (
+                    <p className="text-xs text-red-500 mt-1">
+                      {errors.first_name.message}
+                    </p>
+                  )}
                 </div>
-              )}
-            />
+                <div className="space-y-2">
+                  <Label>Last Name</Label>
+                  <Input
+                    placeholder="Enter your last name"
+                    className="h-11 rounded-none"
+                    {...register("last_name")}
+                  />
+                  {errors.last_name && (
+                    <p className="text-xs text-red-500 mt-1">
+                      {errors.last_name.message}
+                    </p>
+                  )}
+                </div>
+              </div>
 
-            {/* Delivery Method */}
-            <div className="mt-15 space-y-6">
-              <Label className="uppercase font-bold">Delivery Method</Label>
+              <div className="space-y-2">
+                <Label>Address</Label>
+                <Input
+                  placeholder="Enter your address"
+                  className="h-11 rounded-none"
+                  {...register("address_line")}
+                />
+                {errors.address_line && (
+                  <p className="text-xs text-red-500 mt-1">
+                    {errors.address_line.message}
+                  </p>
+                )}
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>City</Label>
+                  <Input
+                    placeholder="Enter your city"
+                    className="h-11 rounded-none"
+                    {...register("town_city")}
+                  />
+                  {errors.town_city && (
+                    <p className="text-xs text-red-500 mt-1">
+                      {errors.town_city.message}
+                    </p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Controller
+                    name="country"
+                    control={control}
+                    rules={{ required: "State is required" }}
+                    render={({ field }) => (
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <SelectTrigger className="w-full rounded-none">
+                          <SelectValue placeholder="Please select a state" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="lagos">Lagos</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                  {errors.country && (
+                    <p className="text-xs text-red-500 mt-1">
+                      {errors.country.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label>Phone Number</Label>
+                <Input
+                  placeholder="Enter your number"
+                  className="h-11 rounded-none"
+                  {...register("phone_number")}
+                />
+                {errors.phone_number && (
+                  <p className="text-xs text-red-500 mt-1">
+                    {errors.phone_number.message}
+                  </p>
+                )}
+              </div>
+
               <Controller
-                name="delivery_method"
+                name="save_address"
                 control={control}
                 render={({ field }) => (
-                  <RadioGroup
-                    value={field.value}
-                    onValueChange={field.onChange}
-                    onChange={() => setDeliveryMethod(field.value)}
-                    className="space-y-3 mt-2"
-                  >
-                    {/* Standard */}
-                    <div className="flex items-start space-x-2 border border-gray-100 p-4">
-                      <RadioGroupItem value="STANDARD" id="standard" />
-                      <div className="flex flex-col gap-2">
-                        <Label
-                          htmlFor="standard"
-                          className="cursor-pointer text-gray-500 tracking-wide leading-6"
-                        >
-                          Standard Delivery – Some items are being sourced from
-                          a store, allow 3–5 working days
-                        </Label>
-                        <span className="uppercase font-medium">Free</span>
-                      </div>
-                    </div>
-
-                    {/* Premium */}
-                    <div className="flex items-start space-x-2 border border-gray-100 p-4">
-                      <RadioGroupItem value="PREMIUM" id="premium" />
-                      <div className="flex flex-col gap-2">
-                        <Label
-                          htmlFor="premium"
-                          className="cursor-pointer text-gray-500 tracking-wide leading-6"
-                        >
-                          Premium Delivery – allow 1–2 working days for orders
-                          made before 2pm
-                        </Label>
-                        <span className="uppercase font-medium">₦3,000.00</span>
-                      </div>
-                    </div>
-
-                    {/* Pickup */}
-                    <div className="flex items-start space-x-2 border border-gray-100 p-4">
-                      <RadioGroupItem value="PICKUP" id="pickup" />
-                      <div className="flex flex-col gap-2">
-                        <Label
-                          htmlFor="pickup"
-                          className="cursor-pointer text-gray-500 tracking-wide leading-6"
-                        >
-                          Self Pickup – Pick up your order from the pickup point
-                          every Thursday (FREE)
-                        </Label>
-                        <span className="uppercase font-medium">Free</span>
-                      </div>
-                    </div>
-                  </RadioGroup>
+                  <div className="flex gap-2 items-center">
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                    <p className="text-sm">
+                      Save address and contact information for future orders
+                    </p>
+                  </div>
                 )}
               />
-              {errors.delivery_method && (
-                <p className="text-red-500 text-sm">
-                  {errors.delivery_method.message}
-                </p>
-              )}
-            </div>
 
-            <Button type="submit" className="w-full text-gray text-white h-11 rounded-none uppercase">
-              {status === "loading" ? <LoadingDots /> : "Place order"}
-            </Button>
+              {/* Delivery Method */}
+              <div className="mt-15 space-y-6">
+                <Label className="uppercase font-bold">Delivery Method</Label>
+                <Controller
+                  name="delivery_method"
+                  control={control}
+                  render={({ field }) => (
+                    <RadioGroup
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      onChange={() => setDeliveryMethod(field.value)}
+                      className="space-y-3 mt-2"
+                    >
+                      {/* Standard */}
+                      <div className="flex items-start space-x-2 border border-gray-100 p-4">
+                        <RadioGroupItem value="STANDARD" id="standard" />
+                        <div className="flex flex-col gap-2">
+                          <Label
+                            htmlFor="standard"
+                            className="cursor-pointer text-gray-500 tracking-wide leading-6"
+                          >
+                            Standard Delivery – Some items are being sourced
+                            from a store, allow 3–5 working days
+                          </Label>
+                          <span className="uppercase font-medium">Free</span>
+                        </div>
+                      </div>
+
+                      {/* Premium */}
+                      <div className="flex items-start space-x-2 border border-gray-100 p-4">
+                        <RadioGroupItem value="PREMIUM" id="premium" />
+                        <div className="flex flex-col gap-2">
+                          <Label
+                            htmlFor="premium"
+                            className="cursor-pointer text-gray-500 tracking-wide leading-6"
+                          >
+                            Premium Delivery – allow 1–2 working days for orders
+                            made before 2pm
+                          </Label>
+                          <span className="uppercase font-medium">
+                            ₦3,000.00
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Pickup */}
+                      <div className="flex items-start space-x-2 border border-gray-100 p-4">
+                        <RadioGroupItem value="PICKUP" id="pickup" />
+                        <div className="flex flex-col gap-2">
+                          <Label
+                            htmlFor="pickup"
+                            className="cursor-pointer text-gray-500 tracking-wide leading-6"
+                          >
+                            Self Pickup – Pick up your order from the pickup
+                            point every Thursday (FREE)
+                          </Label>
+                          <span className="uppercase font-medium">Free</span>
+                        </div>
+                      </div>
+                    </RadioGroup>
+                  )}
+                />
+                {errors.delivery_method && (
+                  <p className="text-red-500 text-sm">
+                    {errors.delivery_method.message}
+                  </p>
+                )}
+              </div>
+
+              <Button
+                type="submit"
+                className="w-full text-gray text-white h-11 rounded-none uppercase"
+              >
+                {status === "loading" ? <LoadingDots /> : "Place order"}
+              </Button>
             </form>
           </CardContent>
         </Card>
@@ -378,7 +399,7 @@ const finalTotal = totalPrice + (deliveryMethod ? deliveryFees[deliveryMethod] :
                   Item(s)
                 </span>
                 <span className="font-semibold leading-6 tracking-wide text-gray-600">
-                   {items.length}
+                  {items.length}
                 </span>
               </div>
               <div className="flex justify-between">
@@ -410,7 +431,9 @@ const finalTotal = totalPrice + (deliveryMethod ? deliveryFees[deliveryMethod] :
                   Delivery
                 </span>
                 <span className="font-semibold leading-6 tracking-wide text-gray-600">
-                 {deliveryMethod && deliveryMethod === 'PREMIUM' ? '₦3,000' : '₦0.00'}
+                  {deliveryMethod && deliveryMethod === "PREMIUM"
+                    ? "₦3,000"
+                    : "₦0.00"}
                 </span>
               </div>
               <div className="flex justify-between font-semibold mt-5">
@@ -418,8 +441,7 @@ const finalTotal = totalPrice + (deliveryMethod ? deliveryFees[deliveryMethod] :
                   Total
                 </span>
                 <span className="font-bold leading-6 bg-grey-900">
-                ₦{formatAmount(finalTotal)}
-
+                  ₦{formatAmount(finalTotal)}
                 </span>
               </div>
             </div>
