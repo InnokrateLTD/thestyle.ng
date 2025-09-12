@@ -1,5 +1,5 @@
 "use client"
-import { useProducts } from "@/api-services/product";
+// import { useProducts } from "@/api-services/product";
 import ProductList from "@/app-components/product-list";
 const SelectedVendor = () => {
 //     const { result: products} = useProducts({
