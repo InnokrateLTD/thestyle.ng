@@ -61,7 +61,6 @@ const Profile = () => {
                   "hover:bg-red-700 hover:text-white"
                 )}
                 onClick={() => {
-                  // 🔴 handle delete action here
                   console.log("Delete Account clicked");
                 }}
               >

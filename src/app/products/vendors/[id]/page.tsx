@@ -2,11 +2,11 @@
 import { useProducts } from "@/api-services/product";
 import ProductList from "@/app-components/product-list";
 const SelectedVendor = () => {
-    const { result: products} = useProducts({
-    is_featured_product: true,
-    is_new_arrival: true,
-    is_special_offer: true
-  })
+//     const { result: products} = useProducts({
+//     is_featured_product: true,
+//     is_new_arrival: true,
+//     is_special_offer: true
+//   })
     return(
         <main className="w-full">
             <section className="w-[98%] mx-auto space-y-1">

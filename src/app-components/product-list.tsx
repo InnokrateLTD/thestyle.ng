@@ -7,7 +7,7 @@ import Modal from "@/app-components/landing-page/modal";
 import FilterProduct from "@/app-components/product-page/filter-product";
 
 const ProductList = ({title} : {title: string}) => {
-  const {resultIsLoading, result: products} = useProducts()
+  const {/*resultIsLoading,*/ result: products} = useProducts()
  
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [type, setType] = useState('filter')

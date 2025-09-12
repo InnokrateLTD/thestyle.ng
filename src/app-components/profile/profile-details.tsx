@@ -11,6 +11,7 @@ import {
 import toast from "react-hot-toast";
 import { useStylengAuthStore } from "@/app-stores/auth";
 import LoadingDots from "../ui/loadingDots";
+import { useGetProfile } from "@/api-services/profile";
 const ProfileDetails = () => {
   const [status, setStatus] = useState<"idle" | "loading">("idle");
   const { setEmail} = useStylengAuthStore();
@@ -22,7 +23,8 @@ const ProfileDetails = () => {
     resolver: zodResolver(signupVendorSchema),
     mode: "onChange",
   });
-
+  const profile = useGetProfile()
+  console.log(profile, 'profile')
   const onSubmit = async (data: SignupVendorFormValues) => {
     setStatus("loading");
     const x = {
