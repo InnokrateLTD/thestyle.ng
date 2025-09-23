@@ -131,11 +131,52 @@ export const CreateOrderSchema = z.object({
     }),
   address_line: z.string().min(1, "Address is required"),
   town_city: z.string().min(1, "Town is required"),
-  country: z.string().min(1, "Country is required"),
+  state: z.string().min(1, "State is required"),
   save_address: z.boolean().optional(),
+  promo_code: z.string().optional(),
   delivery_method: z.enum(["STANDARD", "PREMIUM", "PICKUP"], {
   message: "Delivery method must be STANDARD or PREMIUM or PICKUP",
   }),
+});
+
+// Profile Details
+export const ProfileSchema = z.object({
+  first_name: z.string().min(1, "First name is required"),
+  last_name: z.string().min(1, "Last name is required"),
+  phone_number: z
+    .string()
+    .min(1, { message: "Phone number is required" })
+    .refine((value) => phoneRegex.test(value), {
+      message: "Invalid phone number format",
+    }),
+  email: z.string().min(1, "Email is required")
+});
+// Save Address
+export const AddressSchema = z.object({
+  first_name: z.string().min(1, "First name is required"),
+  last_name: z.string().min(1, "Last name is required"),
+  phone_number: z
+    .string()
+    .min(1, { message: "Phone number is required" })
+    .refine((value) => phoneRegex.test(value), {
+      message: "Invalid phone number format",
+    }),
+  address_line: z.string().min(1, "Address is required"),
+  town_city: z.string().min(1, "Town is required"),
+  state: z.string().min(1, "State is required"),
+  is_default: z.boolean().optional()
+});
+
+// Reset
+export const ResetPasswordSchema = z.object({
+  old_password: z
+    .string()
+    .min(8, "Must contain at least 8 characters")
+    .regex(/[\W_0-9]/, "Must have at least one symbol or number"),
+  new_password: z
+    .string()
+    .min(8, "Must contain at least 8 characters")
+    .regex(/[\W_0-9]/, "Must have at least one symbol or number"),
 });
 export type CreatePasswordValues = z.infer<typeof createPasswordSchema>;
 export type SignupBuyerFormValues = z.infer<typeof signupBuyerSchema>;
@@ -147,3 +188,6 @@ export type InitiateResetValues = z.infer<typeof InitiateResetSchema>;
 export type ProductFormData = z.infer<typeof AddProductSchema>;
 export type ReviewFormData = z.infer<typeof CreateReviewSchema>;
 export type CreateOrderFormValues = z.infer<typeof CreateOrderSchema>
+export type ProfileFormValues = z.infer<typeof ProfileSchema>
+export type AddressFormValues = z.infer<typeof AddressSchema>
+export type ResetPasswordFormValues = z.infer<typeof ResetPasswordSchema>

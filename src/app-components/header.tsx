@@ -16,6 +16,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/app-components/ui/dropdown-menu";
+import { useRouter } from "next/navigation";
 import LoginForm from "@/app-components/landing-page/login-form";
 import SignupForm from "@/app-components/landing-page/signup-form";
 import SignupVendorForm from "./vendors/signup";
@@ -32,9 +33,11 @@ import ReviewProduct from "./product-page/review-product";
 import Cart from "./cart";
 import Modal from "@/app-components/landing-page/modal";
 import { useModalStore } from "@/app-stores/modal";
+import Wishlist from "./wishlist";
 
 const Header = () => {
   const { activeModal, openModal, closeModal } = useModalStore();
+  const router = useRouter()
   return (
     <header className="w-full h-[56px] sm:h-[80px] bg-black">
       <div className="text-sm font-bold w-[98%] h-full mx-auto text-white flex justify-center sm:justify-between items-center">
@@ -47,14 +50,14 @@ const Header = () => {
           <li className="border-[1.5px] border-white w-7.5 h-7.5 flex items-center justify-center rounded-full">
             <SearchIcon className="w-5 h-5" />
           </li>
-          <li className="border-[1.5px] border-white w-7.5 h-7.5 flex items-center justify-center rounded-full">
+          <li onClick={() => openModal('wishlist')} className="cursor-pointer border-[1.5px] border-white w-7.5 h-7.5 flex items-center justify-center rounded-full">
             <HeartIcon className="w-5 h-5" />
           </li>
           <li onClick={() => openModal('cart')} className="cursor-pointer border-[1.5px] border-white w-7.5 h-7.5 flex items-center justify-center rounded-full">
             <HandbagIcon className="w-5 h-5" />
           </li>
           <li className="flex items-center gap-1">
-            <div className="border-[1.5px] border-white w-7.5 h-7.5 flex items-center justify-center rounded-full">
+            <div onClick={() => router.push('/profile')} className="border-[1.5px] border-white w-7.5 h-7.5 flex items-center justify-center rounded-full cursor-pointer">
               <UserIcon className="w-5 h-5" />
             </div>
             <div className="w-[115px] h-10 text-sm flex flex-col justify-center">
@@ -122,6 +125,9 @@ const Header = () => {
       </Modal>
       <Modal isOpen={activeModal === "review"} onClose={closeModal}>
           <ReviewProduct />
+      </Modal>
+      <Modal isOpen={activeModal === "wishlist"} onClose={closeModal}>
+          <Wishlist />
       </Modal>
     </header>
   );

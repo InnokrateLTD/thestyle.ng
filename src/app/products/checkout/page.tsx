@@ -1,7 +1,7 @@
 // app/checkout/page.tsx
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useMemo} from "react";
 import { Input } from "@/app-components/ui/input";
 import { Label } from "@/app-components/ui/label";
 import { Button } from "@/app-components/ui/button";
@@ -30,21 +30,29 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useStylengAuthStore } from "@/app-stores/auth";
 import { useRouter } from "next/navigation";
-import { createOrder, initializePayment } from "@/api-services/order";
+import { useModalStore } from "@/app-stores/modal";
+import { createOrder, initializePayment, addPromoCode, verifyPayment} from "@/api-services/order";
 import toast from "react-hot-toast";
 export default function CheckoutPage() {
   const router = useRouter();
-  const { /*totalItems,*/ totalPrice, syncWithBackend } = useCartStore();
+  const { totalItems, totalPrice, clearCart } = useCartStore();
   const items = useCartStore((state) => state.items);
   const size = useCartStore((state) => state.size);
   const email = useStylengAuthStore((state) => state.email);
-  const { isLoggedIn } = useStylengAuthStore();
+  // const [promoCode, setPromoCode] = useState('')
+  const { setRef } = useStylengAuthStore();
   const [status, setStatus] = useState<"idle" | "loading">("idle");
+  const [loading, setLoading] = useState<"idle" | "loading">("idle");
   const [deliveryMethod, setDeliveryMethod] = useState("");
+  const [discount, setDiscount]= useState<number | string>(0)
+  const [cashback /*,setCashback*/] = useState<number>(0);
+  const { openModal } = useModalStore()
   const {
     register,
     control,
     handleSubmit,
+    getValues,
+    reset,
     formState: { errors },
   } = useForm<CreateOrderFormValues>({
     resolver: zodResolver(CreateOrderSchema),
@@ -52,7 +60,7 @@ export default function CheckoutPage() {
     defaultValues: {
       save_address: false,
       delivery_method: "STANDARD",
-      country: "",
+      state: "",
     },
   });
   const deliveryFees: Record<string, number> = {
@@ -60,27 +68,30 @@ export default function CheckoutPage() {
     PREMIUM: 3000,
     PICKUP: 0,
   };
-  const finalTotal =
-    totalPrice + (deliveryMethod ? deliveryFees[deliveryMethod] : 0);
+  const finalTotal = useMemo(() => {
+    const fee = deliveryMethod ? deliveryFees[deliveryMethod] || 0 : 0;
+
+    const discountValue = Number(discount) || 0;
+    const cashbackValue = cashback || 0;
+
+    return totalPrice + fee - discountValue - cashbackValue;
+    // eslint-disable-next-line
+  }, [totalPrice, deliveryMethod, discount, cashback]);
   const onSubmit = async (data: CreateOrderFormValues) => {
     setStatus("loading");
-    if (isLoggedIn) {
-      syncWithBackend("add");
-    }
     const x = {
       address_details: {
         first_name: data.first_name,
         last_name: data.last_name,
         address_line: data.address_line,
         town_city: data.town_city,
-        postcode: "L8G 3Y8",
-        country: data.country,
+        state: data.state,
         phone_number: data.phone_number,
       },
       save_address: data.save_address,
       delivery_type: data.delivery_method,
       delivery_fee: data.delivery_method === "PREMIUM" ? 3000 : 0,
-      promo_code: "ZSZD3FTV",
+      promo_code: data.promo_code,
       items: items,
     };
     try {
@@ -88,10 +99,15 @@ export default function CheckoutPage() {
       if (response.status === 200 || response.status === 201) {
         const data = {
           order_id: response.data.data.id,
-          customer_email: email
+          customer_email: email,
+          redirect_url: process.env.NEXT_PUBLIC_PAYMENT_REDIRECT_URI
         }
         const res = await initializePayment(data)
-        console.log(res);
+        if (res.status === 200 || res.status === 201) {
+
+        setRef(res.data.data.reference)
+        window.location.href = `${res?.data?.data?.authorization_url}?reference=${res?.data?.data?.reference}`;
+      }
       } else {
         toast.error(response?.data.msg);
       }
@@ -101,6 +117,92 @@ export default function CheckoutPage() {
       setStatus("idle");
     }
   };
+  const validatePromoCode = async () => {
+      setLoading("loading")
+      const code = getValues("promo_code");
+      if (!code) return;
+      const x = {
+        code: code,
+        items: items
+      }
+      try {
+      const response = await addPromoCode(x)
+      if (response.status === 200 || response.status === 201) {
+        if (response.data.data.valid && response.data.data.message === 'Applicable'){
+          setDiscount(response.data.data.discount)
+          toast.success(`A discount of  ₦${response.data.data.discount} has been added to your order`)
+        }
+      } else {
+        toast.error(response?.data.msg);
+      }
+    } catch (error) {
+      toast.error(`Error: ${error}`);
+    } finally {
+      setLoading("idle");
+    }
+      
+  }
+  const verifyCustomerPayment = async (ref: string) => {
+    if (!ref) return
+      const res = await verifyPayment(ref)
+      if (res && res?.data?.verified === true){
+        toast.success('Payment Successful')
+        clearCart()
+        router.push('/')
+      } else {
+        toast.error(res?.data?.message)
+      }
+  }
+  // useEffect(() => {
+  //     const url = new URL(window.location.href);
+  //     const reference = url.searchParams.get("reference");
+  //     if (reference) {
+  //       verifyCustomerPayment(reference)
+  //     } 
+  //   // eslint-disable-next-line
+  // }, []);
+  // useEffect(() => {
+  //   const values = getValues()
+  //   reset({
+  //     first_name: values.first_name, 
+  //     last_name: values.last_name, 
+  //     phone_number: values.phone_number,
+  //     delivery_method: values.delivery_method,
+  //     address_line: values.address_line,
+  //     save_address: values.save_address,
+  //     state: values.state,
+  //     town_city: values.town_city,
+  //   })
+  // }, [getValues, reset])
+
+  useEffect(() => {
+  const url = new URL(window.location.href);
+  const reference = url.searchParams.get("reference");
+
+  if (reference) {
+    verifyCustomerPayment(reference).then(() => {
+      const values = getValues();
+      reset({
+        first_name: values.first_name,
+        last_name: values.last_name,
+        phone_number: values.phone_number,
+        delivery_method: values.delivery_method,
+        address_line: values.address_line,
+        save_address: values.save_address,
+        state: values.state,
+        town_city: values.town_city,
+      });
+    });
+  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
+
+  useEffect(() => {
+    if (items.length === 0){
+      router.push('/')
+    }
+    // eslint-disable-next-line
+  }, [items])
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       <button
@@ -114,7 +216,7 @@ export default function CheckoutPage() {
       <h1 className="text-center text-lg font-semibold">
         CHECKOUT{" "}
         <span className="block text-sm font-normal">
-          {items.length} item(s) ₦{formatAmount(totalPrice)}
+          {totalItems} item(s) ₦{formatAmount(totalPrice)}
         </span>
       </h1>
 
@@ -189,7 +291,7 @@ export default function CheckoutPage() {
 
                 <div className="space-y-2">
                   <Controller
-                    name="country"
+                    name="state"
                     control={control}
                     rules={{ required: "State is required" }}
                     render={({ field }) => (
@@ -206,9 +308,9 @@ export default function CheckoutPage() {
                       </Select>
                     )}
                   />
-                  {errors.country && (
+                  {errors.state && (
                     <p className="text-xs text-red-500 mt-1">
-                      {errors.country.message}
+                      {errors.state.message}
                     </p>
                   )}
                 </div>
@@ -327,6 +429,7 @@ export default function CheckoutPage() {
           <CardHeader className="flex justify-between">
             <div className="uppercase font-bold leading-6">Your Bag</div>
             <Button
+              onClick={() => openModal('cart')}
               type="button"
               variant={"link"}
               className="text-sm text-gray-500 underline"
@@ -380,14 +483,16 @@ export default function CheckoutPage() {
               <div className="flex mt-2">
                 <Input
                   placeholder="Enter code"
+                  {...register('promo_code')}
                   className="rounded-none h-11 w-[347px]"
                 />
                 <Button
+                  onClick={validatePromoCode}
                   type="button"
                   variant="default"
-                  className="ml-2 w-[159px] h-11 rounded-none"
+                  className="ml-2 w-[159px] h-11 rounded-none uppercase"
                 >
-                  Apply
+                 {loading === "loading" ? <LoadingDots /> : "apply"}
                 </Button>
               </div>
             </div>
@@ -399,7 +504,7 @@ export default function CheckoutPage() {
                   Item(s)
                 </span>
                 <span className="font-semibold leading-6 tracking-wide text-gray-600">
-                  {items.length}
+                  {totalItems}
                 </span>
               </div>
               <div className="flex justify-between">
@@ -415,7 +520,7 @@ export default function CheckoutPage() {
                   Cash-back Deduction
                 </span>
                 <span className="font-semibold leading-6 tracking-wide text-gray-600">
-                  ₦0.00
+                 ₦{cashback ? formatAmount(Number(cashback)) : '0.00'} 
                 </span>
               </div>
               <div className="flex justify-between">
@@ -423,7 +528,7 @@ export default function CheckoutPage() {
                   Coupon Discount
                 </span>
                 <span className="font-semibold leading-6 tracking-wide text-gray-600">
-                  ₦0.00
+                 ₦{discount ? formatAmount(Number(discount)) : '0.00'}
                 </span>
               </div>
               <div className="flex justify-between">

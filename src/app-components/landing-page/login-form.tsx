@@ -65,8 +65,10 @@ const LoginForm = () => {
         localStorage.removeItem("loginRedirectedFromUrl");
         if (loginRedirectedFromUrl) {
           router.push(loginRedirectedFromUrl);
-        } else {
-          router.push("/");
+        } else if (response.data.data.user.role === 'Seller') {
+          router.push("/vendors-app");
+        } else{
+          router.push("/")
         }
         toast.success("Login Successful");
         closeModal();

@@ -28,7 +28,13 @@ export const ApiRoutes = {
     GetUserProfile: 'user/profile/',
     CreateOrder: 'orders/create/',
     InitializePayment: 'payments/initialize/',
-    GetProfile: 'user/profile/',
+    GetProfile: 'account/profile/',
     UpdateProfile: 'account/profile/update/',
-    ChangePassword: 'user/profile/password-change/'
+    ChangePassword: 'user/profile/password-change/',
+    AddPromoCode: 'orders/validate-promo/',
+    VerifyPayment: 'payments/verify',
+    AddAddress: 'account/addresses',
+    ResetProfilePassword: 'account/profile/password-change/',
+    ListOrders: 'orders/list/',
+    WishList: 'products/wishlist'
 }

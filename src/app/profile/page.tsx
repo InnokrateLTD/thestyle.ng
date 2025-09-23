@@ -7,6 +7,9 @@ import {
   TabsTrigger,
 } from "@/app-components/ui/tabs";
 import ProfileDetails from "@/app-components/profile/profile-details";
+import SaveAddresses from "@/app-components/profile/saved-addresses";
+import ResetPassword from "@/app-components/profile/reset-password";
+import OrderList from "@/app-components/profile/order-list";
 import { cn } from "@/lib/utils";
 
 const Profile = () => {
@@ -36,7 +39,6 @@ const Profile = () => {
                   { value: "details", label: "My Details" },
                   { value: "orders", label: "Orders" },
                   { value: "address", label: "Addresses" },
-                  { value: "payment", label: "Payments" },
                   { value: "password", label: "Reset Password" },
                   { value: "logout", label: "Log out" },
                 ].map((tab) => (
@@ -78,18 +80,35 @@ const Profile = () => {
                 </div>
               </div>
             </TabsContent>
-
             <TabsContent value="orders">
-              Your orders will appear here.
+              <div className="flex justify-between w-full">
+                <h1 className="uppercase font-bold leading-6 w-1/2">
+                  Recent Order
+                </h1>
+                <div className="w-1/2 flex justify-end">
+                  <OrderList />
+                </div>
+              </div>
             </TabsContent>
             <TabsContent value="address">
-              Manage your addresses here.
-            </TabsContent>
-            <TabsContent value="payment">
-              Your payment methods go here.
+              <div className="flex justify-between w-full">
+                <h1 className="uppercase font-bold leading-6 w-1/2">
+                  Your Address
+                </h1>
+                <div className="w-1/2 flex justify-end">
+                  <SaveAddresses />
+                </div>
+              </div>
             </TabsContent>
             <TabsContent value="password">
-              Change your password here.
+              <div className="flex justify-between w-full">
+                <h1 className="uppercase font-bold leading-6 w-1/2">
+                  Reset Password
+                </h1>
+                <div className="w-1/2 flex justify-end">
+                  <ResetPassword />
+                </div>
+              </div>
             </TabsContent>
             <TabsContent value="logout">You have been logged out.</TabsContent>
           </Tabs>

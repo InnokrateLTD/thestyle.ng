@@ -1,3 +1,5 @@
+
+
 export interface Category {
     id: string
     name: string
@@ -41,9 +43,9 @@ export interface ProductResult {
     results:ProductResponse[]
 }
 interface StockItems {
-            size: string
-            color: string
-            stock_quantity: number
+    size: string
+    color: string
+    stock_quantity: number
 }
 export interface SingleProduct {
     id: string
@@ -97,6 +99,7 @@ export interface ProductReview{
 export interface ProductReviewResponse{
     results: ProductReview[]
 }
+
 
 export interface CartItem {
   product_id: string | number;

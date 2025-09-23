@@ -21,3 +21,33 @@ export interface Order {
     items: CartItem[]
     created_at: string
 }
+
+export interface PaymentData{
+    transaction_id: string
+    authorization_url: string
+    access_code: string
+    reference: string
+    amount: string | number
+    currency: string
+}
+
+export interface PromoCode{
+    valid: boolean
+    message: string
+    subtotal: number | string
+    discount: number | string
+    total: number | string
+    currency_code: number | string
+}
+
+// Each flattened item = one cart item + its parent order’s info
+export interface FlattenedOrderItem extends CartItem {
+  orderId: string;
+  status: string;
+  created_at: string;
+  total: string;
+  currency_code: string;
+}
+export interface OrderResponse{
+    results: Order[] | null
+}

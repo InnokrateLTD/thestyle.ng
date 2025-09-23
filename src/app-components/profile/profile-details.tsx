@@ -1,53 +1,56 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/app-components/ui/input";
 import { Button } from "@/app-components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { SignupVendorFormValues, signupVendorSchema } from "@/lib/schema";
-import {
-  signupVendor
-} from "@/api-services/auth";
+import { ProfileFormValues, ProfileSchema } from "@/lib/schema";
 import toast from "react-hot-toast";
-import { useStylengAuthStore } from "@/app-stores/auth";
 import LoadingDots from "../ui/loadingDots";
-import { useGetProfile } from "@/api-services/profile";
+import { useGetProfile, updateUserProfile } from "@/api-services/profile";
 const ProfileDetails = () => {
   const [status, setStatus] = useState<"idle" | "loading">("idle");
-  const { setEmail} = useStylengAuthStore();
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm<SignupVendorFormValues>({
-    resolver: zodResolver(signupVendorSchema),
+  } = useForm<ProfileFormValues>({
+    resolver: zodResolver(ProfileSchema),
     mode: "onChange",
   });
-  const profile = useGetProfile()
-  console.log(profile, 'profile')
-  const onSubmit = async (data: SignupVendorFormValues) => {
+  const {result: profile} = useGetProfile()
+  const onSubmit = async (data: ProfileFormValues) => {
     setStatus("loading");
     const x = {
-      email: data.email,
-      first_name: data.firstName,
-      last_name: data.lastName,
+      // email: data.email,
+      first_name: data.first_name,
+      last_name: data.last_name,
+      phone_number: data.phone_number
     };
     try {
-      const response = await signupVendor(x);
+      const response = await updateUserProfile(x);
       if (response.status === 200 || response.status === 201) {
-        setEmail(response?.data.data.email);
-        toast.success("Registration Successful");
+        toast.success("Update Successful");
       } else {
         toast.error(response?.data.msg);
       }
     } catch (error) {
-      toast.error(`Registration error: ${error}`);
+      toast.error(`Update error: ${error}`);
     } finally {
       setStatus("idle");
     }
   };
-
- 
+  useEffect(() => {
+    if (profile){
+      reset({
+        first_name: profile?.first_name,
+        last_name: profile?.last_name,
+        email: profile?.email,
+        phone_number: profile?.phone_number ?? ''
+      })
+    }
+  }, [profile, reset])
   return (
     <div className="w-full ">
       <form className="space-y-4 " onSubmit={handleSubmit(onSubmit)}>
@@ -60,11 +63,11 @@ const ProfileDetails = () => {
               type="text"
               placeholder="Enter your first name"
               className="border border-grey-lighter h-11 rounded-none text-sm"
-              {...register("firstName")}
+              {...register("first_name")}
             />
-            {errors.firstName && (
+            {errors.first_name && (
               <p className="text-xs text-red-500 mt-1">
-                {errors.firstName.message}
+                {errors.first_name.message}
               </p>
             )}
           </div>
@@ -76,11 +79,11 @@ const ProfileDetails = () => {
               type="text"
               placeholder="Enter your last name"
               className="border border-grey-lighter h-11 rounded-none text-sm"
-              {...register("lastName")}
+              {...register("last_name")}
             />
-            {errors.lastName && (
+            {errors.last_name && (
               <p className="text-xs text-red-500 mt-1">
-                {errors.lastName.message}
+                {errors.last_name.message}
               </p>
             )}
           </div>
@@ -92,6 +95,7 @@ const ProfileDetails = () => {
           </label>
           <Input
             type="email"
+            readOnly
             placeholder="you@email.com"
             className="border border-grey-lighter rounded-none focus:outline-none w-full h-11 text-sm"
             {...register("email")}
@@ -108,15 +112,15 @@ const ProfileDetails = () => {
             type="text"
             placeholder="Enter your phone number"
             className="border border-grey-lighter rounded-none focus:outline-none w-full h-11 text-sm"
-            {...register("email")}
+            {...register("phone_number")}
           />
-          {errors.email && (
-            <p className="text-xs text-red-500 mt-1">{errors.email.message}</p>
+          {errors.phone_number && (
+            <p className="text-xs text-red-500 mt-1">{errors.phone_number.message}</p>
           )}
         </div>
         <Button
           type="submit"
-          className="w-full h-11 border bg-black text-white py-2 rounded font-medium upppercase"
+          className="w-full h-11 border bg-black text-white py-2 rounded font-medium uppercase"
         >
           {status === "loading" ? <LoadingDots /> : "Update Details"}
         </Button>
