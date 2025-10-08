@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import {
   EyeIcon,
   EyeOffIcon,
@@ -27,7 +27,7 @@ import LoadingDots from "../ui/loadingDots";
 import { useModalStore } from "@/app-stores/modal";
 import { useSearchParams } from "next/navigation";
 import { setCookie } from "cookies-next";
-const SignupForm = () => {
+const SignupFormPage = () => {
   const { openModal } = useModalStore();
   const router = useRouter()
   const closeModal = useModalStore((state) => state.closeModal);
@@ -349,4 +349,10 @@ const SignupForm = () => {
   );
 };
 
-export default SignupForm;
+export default function SignupForm() {
+  return (
+    <Suspense fallback={<div className="p-4 text-gray-500">Loading Orders...</div>}>
+      <SignupFormPage />
+    </Suspense>
+  );
+}

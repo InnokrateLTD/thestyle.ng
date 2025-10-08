@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { Input } from "@/app-components/ui/input";
 import { Button } from "@/app-components/ui/button";
 import Image from "next/image";
@@ -20,7 +20,7 @@ import { useModalStore } from "@/app-stores/modal";
 import { useSearchParams } from "next/navigation";
 import { setCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
-const SignupVendorForm = () => {
+const SignupVendorFormPage = () => {
   const { openModal } = useModalStore();
   const closeModal = useModalStore((state) => state.closeModal);
   const provider = useStylengAuthStore((state) => state.provider);
@@ -219,4 +219,10 @@ const SignupVendorForm = () => {
   );
 };
 
-export default SignupVendorForm;
+export default function SignupVendorForm() {
+  return (
+    <Suspense fallback={<div className="p-4 text-gray-500">Loading...</div>}>
+      <SignupVendorFormPage />
+    </Suspense>
+  );
+}

@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { Input } from "@/app-components/ui/input";
 import { Button } from "@/app-components/ui/button";
@@ -20,7 +20,7 @@ import { useModalStore } from "@/app-stores/modal";
 import { useStylengAuthStore } from "@/app-stores/auth";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-const LoginForm = () => {
+const LoginFormPage = () => {
   const { openModal } = useModalStore();
   const router = useRouter();
   const { setProvider, setEmail, setPassword, setStylengUser, setIsLoggedIn } =
@@ -257,4 +257,10 @@ toast.success("Login Successful");
   );
 };
 
-export default LoginForm;
+export default function LoginForm() {
+  return (
+    <Suspense fallback={<div className="p-4 text-gray-500">Loading Orders...</div>}>
+      <LoginFormPage />
+    </Suspense>
+  );
+}

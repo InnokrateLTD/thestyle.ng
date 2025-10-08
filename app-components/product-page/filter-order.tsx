@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, Suspense} from "react";
 import {
   Collapsible,
   CollapsibleTrigger,
@@ -11,7 +11,7 @@ import { Label } from "@/app-components/ui/label";
 import { Button } from "../ui/button";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useModalStore } from "@/app-stores/modal";
-const FilterOrder = ({ type }: { type?: string }) => {
+const FilterOrderPage = ({ type }: { type?: string }) => {
   const [openSection, setOpenSection] = useState<string | null>(
     type === "sort" ? "sort" : null
   );
@@ -143,4 +143,10 @@ const FilterOrder = ({ type }: { type?: string }) => {
   );
 };
 
-export default FilterOrder;
+export default function FilterOrder() {
+  return (
+    <Suspense fallback={<div className="p-4 text-gray-500">Loading Orders...</div>}>
+      <FilterOrderPage />
+    </Suspense>
+  );
+}

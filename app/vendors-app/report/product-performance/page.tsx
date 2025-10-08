@@ -4,6 +4,7 @@ import { Button } from "@/app-components/ui/button";
 import { Plus } from "lucide-react";
 import Image from "next/image";
 import { Badge } from "@/app-components/ui/badge";
+import { Suspense } from "react";
 const ProductPerformance = () => {
   return (
     <div className="space-y-6 w-full">
@@ -84,4 +85,10 @@ const ProductPerformance = () => {
     </div>
   );
 };
-export default ProductPerformance;
+export default function ProductPerformancePage() {
+  return (
+    <Suspense fallback={<div className="p-4 text-gray-500">Loading Orders...</div>}>
+      <ProductPerformance />
+    </Suspense>
+  );
+}
