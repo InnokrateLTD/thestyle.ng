@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect, Suspense} from "react";
+import { useState, useEffect, Suspense } from "react";
 import Search from "@/app-components/search";
 import { Button } from "@/app-components/ui/button";
 import { Plus } from "lucide-react";
@@ -11,7 +11,7 @@ import { DatePickerWithRange } from "@/app-components/ui/date-range";
 import { formatDateToYYYYMMDD } from "@/lib/utils";
 import { OrderParams } from "@/interfaces-and-types/order";
 import { useModalStore } from "@/app-stores/modal";
-const Order = () => {
+const OrderPage = () => {
   const { openModal } = useModalStore()
   const searchParams = useSearchParams();
       const [selectedDateRange, setSelectedDateRange] = useState<
@@ -62,7 +62,6 @@ const Order = () => {
       // eslint-disable-next-line
     }, [searchParams, selectedDateRange?.to]);
   return (
-    
     <div className="space-y-6 w-full">
       <div className="">
         <h2 className="text-lg font-bold uppercase">Orders</h2>
@@ -71,9 +70,9 @@ const Order = () => {
         </p>
       </div>
       <div className="w-full flex justify-between">
-        <Suspense fallback={<div>Loading search...</div>}>
+        <div className="flex gap-4">
           <Search placeholder="Search" />
-        </Suspense>
+        </div>
         <div className="flex gap-4">
           <DatePickerWithRange onSelectDateRange={handleSelectDateRange} />
             <Button
@@ -182,4 +181,11 @@ const Order = () => {
     </div>
   );
 };
-export default Order;
+
+export default function Order() {
+  return (
+    <Suspense fallback={<div className="p-4 text-gray-500">Loading Orders...</div>}>
+      <OrderPage />
+    </Suspense>
+  );
+}
