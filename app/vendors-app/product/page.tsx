@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import Search from "@/app-components/search";
 import { Button } from "@/app-components/ui/button";
 import { Plus, EllipsisVertical } from "lucide-react";
@@ -23,7 +23,7 @@ const CSVLinkNoSSR = dynamic(() => import("react-csv").then(mod => mod.CSVLink),
 })
 import { ProductResponse, ProductParams } from "@/interfaces-and-types/product";
 import toast from "react-hot-toast";
-const Product = () => {
+const ProductPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const vendorID = useStylengAuthStore((state) => state.stylengUser.id);
@@ -341,4 +341,10 @@ const Product = () => {
     </div>
   );
 };
-export default Product;
+export default function Order() {
+  return (
+    <Suspense fallback={<div className="p-4 text-gray-500">Loading Products...</div>}>
+      <ProductPage />
+    </Suspense>
+  );
+}

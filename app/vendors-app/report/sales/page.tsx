@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Search from "@/app-components/search";
 import { Button } from "@/app-components/ui/button";
 import { Plus } from "lucide-react";
@@ -9,7 +9,7 @@ import { useGetSales } from "@/api-services/report";
 import { useSearchParams } from "next/navigation";
 import { formatDateToYYYYMMDD } from "@/lib/utils";
 import { SalesParams } from "@/interfaces-and-types/product";
-const Sales = () => {
+const SalesPage = () => {
     const searchParams = useSearchParams();
         const [selectedDateRange, setSelectedDateRange] = useState<
         DateRange | undefined
@@ -161,4 +161,10 @@ const Sales = () => {
     </div>
   );
 };
-export default Sales;
+export default function Sales() {
+  return (
+    <Suspense fallback={<div className="p-4 text-gray-500">Loading Orders...</div>}>
+      <SalesPage />
+    </Suspense>
+  );
+}

@@ -1,6 +1,6 @@
 "use client"
 import Search from "@/app-components/search";
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import { Button } from "@/app-components/ui/button";
 import { Plus, EllipsisVertical } from "lucide-react";
 import {
@@ -19,7 +19,7 @@ type Query = {
     page: number
     pageSize: number
 }
-const Product = () => {
+const ProductPage = () => {
   const searchParams = useSearchParams();
   const [query, setQuery] = useState({
     search: '',
@@ -203,4 +203,10 @@ const Product = () => {
     </div>
   );
 };
-export default Product;
+export default function Product() {
+  return (
+    <Suspense fallback={<div className="p-4 text-gray-500">Loading Orders...</div>}>
+      <ProductPage />
+    </Suspense>
+  );
+}

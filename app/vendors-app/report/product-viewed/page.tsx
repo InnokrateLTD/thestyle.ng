@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Search from "@/app-components/search";
 import { Button } from "@/app-components/ui/button";
 import { Plus } from "lucide-react";
@@ -183,4 +183,10 @@ const ProductViewed = () => {
     </div>
   );
 };
-export default ProductViewed;
+export default function ProductViewedPage() {
+  return (
+    <Suspense fallback={<div className="p-4 text-gray-500">Loading Orders...</div>}>
+      <ProductViewed />
+    </Suspense>
+  );
+}
