@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Search from "@/app-components/search";
 import { Button } from "@/app-components/ui/button";
 import { Plus } from "lucide-react";
@@ -62,6 +62,9 @@ const Order = () => {
       // eslint-disable-next-line
     }, [searchParams, selectedDateRange?.to]);
   return (
+    <Suspense fallback={<div>Loading...</div>}>
+
+    
     <div className="space-y-6 w-full">
       <div className="">
         <h2 className="text-lg font-bold uppercase">Orders</h2>
@@ -179,7 +182,7 @@ const Order = () => {
           )}
               </tbody>
             </table>
-    </div>
+    </div></Suspense>
   );
 };
 export default Order;
