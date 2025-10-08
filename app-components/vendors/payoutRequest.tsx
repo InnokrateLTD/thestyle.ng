@@ -2,17 +2,17 @@
 import { useState } from "react";
 import { Input } from "@/app-components/ui/input";
 import { Button } from "@/app-components/ui/button";
-import { PayoutSchema, PayoutFormValue } from "@/lib/schema";
+import { PayoutSchema, PayoutFormValue, PayoutFormOutput } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { useStylengAuthStore } from "@/app-stores/auth";
+// import { useStylengAuthStore } from "@/app-stores/auth";
 import LoadingDots from "../ui/loadingDots";
 import { useModalStore } from "@/app-stores/modal";
 import { useGetBankingDetails, requestPayouts, useGetWalletBalance } from "@/api-services/store";
-import { Wallet } from "lucide-react";
+// import { Wallet } from "lucide-react";
 const PayoutRequest = () => {
-  const { email } = useStylengAuthStore();
+  // const { email } = useStylengAuthStore();
   const { closeModal } = useModalStore();
   const { result: details } = useGetBankingDetails();
   const { result: balance } = useGetWalletBalance();
@@ -20,14 +20,15 @@ const PayoutRequest = () => {
   const {
     register,
     handleSubmit,
-    watch,
+    // watch,
     formState: { errors },
   } = useForm<PayoutFormValue>({
-    resolver: zodResolver(PayoutSchema),
+    // eslint-disable-next-line
+    resolver: zodResolver(PayoutSchema) as any,
     mode: "onChange",
   });
-  const amount = watch("amount");
-  const onSubmit = async (data: PayoutFormValue) => {
+  // const amount = watch("amount");
+  const onSubmit = async (data: PayoutFormOutput) => {
     
     if (Number(data.amount) > Number(balance?.payable_balance || 0)) {
   toast.error("Insufficient Balance");
@@ -73,7 +74,6 @@ setStatus("loading");
               Payout Amount (₦)
             </label>
             <Input
-              type="text"
               {...register("amount")}
               className="border border-grey-lighter rounded-none focus:outline-none w-100 h-11 text-sm"
             />

@@ -43,7 +43,6 @@ export const PayoutSchema = z.object({
         /^[0-9]{1,3}(?:,[0-9]{3})*(?:\.\d{1,2})?$/.test(val) || /^[0-9]+(\.\d{1,2})?$/.test(val),
       "Enter a valid amount (e.g. 1,000 or 2500.50)"
     )
-    // Convert commas out and to number
     .transform((val) => Number(val.replace(/,/g, "")))
     .refine((num) => num > 0, "Amount must be greater than zero"),
 });
@@ -236,3 +235,4 @@ export type AddressFormValues = z.infer<typeof AddressSchema>
 export type ResetPasswordFormValues = z.infer<typeof ResetPasswordSchema>
 export type bankDetailsFormValues = z.infer<typeof bankDetailsSchema>
 export type PayoutFormValue = z.infer<typeof PayoutSchema>
+export type PayoutFormOutput = z.output<typeof PayoutSchema>;
