@@ -1,6 +1,6 @@
-import { SidebarProvider } from "@/app-components/ui/sidebar"
-import { AppSidebar } from "@/app-components/sidebar"
-import AdminHeader from "@/app-components/admin-header"
+import { SidebarProvider } from "@/components/ui/sidebar"
+import { AppSidebar } from "@/components/sidebar"
+import AdminHeader from "@/components/admin-header"
 export default function Layout({
   children,
 }: {

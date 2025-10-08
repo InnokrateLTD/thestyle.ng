@@ -1,9 +1,9 @@
 "use client"
-import Search from "@/app-components/search";
-import { Button } from "@/app-components/ui/button";
+import Search from "@/components/search";
+import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import Image from "next/image";
-import { Badge } from "@/app-components/ui/badge";
+import { Badge } from "@/components/ui/badge";
 import { Suspense } from "react";
 const ProductPerformance = () => {
   return (

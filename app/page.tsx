@@ -1,11 +1,11 @@
 "use client"
-import CarouselContainer from "@/app-components/landing-page/carousel";
-import Products from "@/app-components/landing-page/products";
-import Categories from "@/app-components/landing-page/category";
-import TestimonialSlider from "@/app-components/landing-page/testimonial";
-import Header from "@/app-components/header";
-import Footer from "@/app-components/footer";
-import NavLinks from "@/app-components/nav-links";
+import CarouselContainer from "@/components/landing-page/carousel";
+import Products from "@/components/landing-page/products";
+import Categories from "@/components/landing-page/category";
+import TestimonialSlider from "@/components/landing-page/testimonial";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
+import NavLinks from "@/components/nav-links";
 import { useProducts } from "@/api-services/product";
 export default function Home() {
   const { result: products} = useProducts({

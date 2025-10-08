@@ -1,6 +1,6 @@
 "use client"
 // import { useProducts } from "@/api-services/product";
-import ProductList from "@/app-components/product-list";
+import ProductList from "@/components/product-list";
 const SelectedVendor = () => {
 //     const { result: products} = useProducts({
 //     is_featured_product: true,

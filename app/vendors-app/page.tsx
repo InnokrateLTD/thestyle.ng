@@ -1,6 +1,6 @@
 "use client";
-import CardWrapper from "@/app-components/card-wrapper";
-import { Badge } from "@/app-components/ui/badge";
+import CardWrapper from "@/components/card-wrapper";
+import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import {
   AreaChart,
@@ -28,43 +28,43 @@ const data = [
   { day: 24, sales: 48 },
 ];
 
-const products = [
-  {
-    id: "CAT2838",
-    name: "Product Name",
-    price: "₦25,000.00",
-    sold: 50,
-    image: "/footwear.jpg",
-  },
-  {
-    id: "CAT2838",
-    name: "Product Name",
-    price: "₦25,000.00",
-    sold: 50,
-    image: "/footwear.jpg",
-  },
-  {
-    id: "CAT2838",
-    name: "Product Name",
-    price: "₦25,000.00",
-    sold: 50,
-    image: "/footwear.jpg",
-  },
-  {
-    id: "CAT2838",
-    name: "Product Name",
-    price: "₦25,000.00",
-    sold: 50,
-    image: "footwear.jpg",
-  },
-  {
-    id: "CAT2838",
-    name: "Product Name",
-    price: "₦25,000.00",
-    sold: 50,
-    image: "footwear.jpg",
-  },
-];
+// const products = [
+//   {
+//     id: "CAT2838",
+//     name: "Product Name",
+//     price: "₦25,000.00",
+//     sold: 50,
+//     image: "/footwear.jpg",
+//   },
+//   {
+//     id: "CAT2838",
+//     name: "Product Name",
+//     price: "₦25,000.00",
+//     sold: 50,
+//     image: "/footwear.jpg",
+//   },
+//   {
+//     id: "CAT2838",
+//     name: "Product Name",
+//     price: "₦25,000.00",
+//     sold: 50,
+//     image: "/footwear.jpg",
+//   },
+//   {
+//     id: "CAT2838",
+//     name: "Product Name",
+//     price: "₦25,000.00",
+//     sold: 50,
+//     image: "footwear.jpg",
+//   },
+//   {
+//     id: "CAT2838",
+//     name: "Product Name",
+//     price: "₦25,000.00",
+//     sold: 50,
+//     image: "footwear.jpg",
+//   },
+// ];
 
 const categories = [
   { name: "Category 1", value: 56635 },
@@ -75,10 +75,10 @@ const categories = [
 ];
 import { useGetVendorOrder } from "@/api-services/order";
 import { useGetBestSeller } from "@/api-services/product";
-import { useStylengAuthStore } from "@/app-stores/auth";
+import { useStylengAuthStore } from "@/stores/auth";
 const Dashboard = () => {
   const { resultIsLoading, result: orders} = useGetVendorOrder()
-  const {resultIsLoading: loading, result: products} = useGetBestSeller()
+  const { result: products} = useGetBestSeller()
   const username = useStylengAuthStore((state) => state.stylengUser.first_name)
   // console.log(product, product)
   return (

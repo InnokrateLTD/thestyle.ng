@@ -1,16 +1,16 @@
 "use client"
 import { useState, useEffect, Suspense } from "react";
-import Search from "@/app-components/search";
-import { Button } from "@/app-components/ui/button";
+import Search from "@/components/search";
+import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import { Badge } from "@/app-components/ui/badge";
+import { Badge } from "@/components/ui/badge";
 import { useGetVendorOrder } from "@/api-services/order";
 import { useSearchParams } from "next/navigation";
 import { DateRange } from "react-day-picker";
-import { DatePickerWithRange } from "@/app-components/ui/date-range";
+import { DatePickerWithRange } from "@/components/ui/date-range";
 import { formatDateToYYYYMMDD } from "@/lib/utils";
 import { OrderParams } from "@/interfaces-and-types/order";
-import { useModalStore } from "@/app-stores/modal";
+import { useModalStore } from "@/stores/modal";
 const OrderPage = () => {
   const { openModal } = useModalStore()
   const searchParams = useSearchParams();

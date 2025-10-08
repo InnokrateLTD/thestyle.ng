@@ -4,11 +4,11 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@/app-components/ui/tabs";
+} from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
-import StoreVendorInfo from "@/app-components/vendors/storeInfo";
-import Requisition from "@/app-components/vendors/requisition";
-import BankDetails from "@/app-components/vendors/bankDetails";
+import StoreVendorInfo from "@/components/vendors/storeInfo";
+import Requisition from "@/components/vendors/requisition";
+import BankDetails from "@/components/vendors/bankDetails";
 const StoreInfo = () => {
   return (
     <div className="space-y-6 w-full">

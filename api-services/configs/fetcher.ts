@@ -1,8 +1,8 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 import { getCookie, setCookie, deleteCookie} from 'cookies-next'
 import { refreshToken } from "../auth";
-import { useStylengAuthStore } from "@/app-stores/auth";
-import { useModalStore } from "@/app-stores/modal";
+import { useStylengAuthStore } from "@/stores/auth";
+import { useModalStore } from "@/stores/modal";
 
 const { setIsLoggedIn, setStylengUser } = useStylengAuthStore.getState()
 const {openModal} = useModalStore.getState()

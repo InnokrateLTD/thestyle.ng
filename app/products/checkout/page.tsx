@@ -2,35 +2,35 @@
 "use client";
 
 import { useState, useEffect, useMemo} from "react";
-import { Input } from "@/app-components/ui/input";
-import { Label } from "@/app-components/ui/label";
-import { Button } from "@/app-components/ui/button";
-import LoadingDots from "@/app-components/ui/loadingDots";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import LoadingDots from "@/components/ui/loadingDots";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/app-components/ui/card";
-import { RadioGroup, RadioGroupItem } from "@/app-components/ui/radio-group";
+} from "@/components/ui/card";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Select,
   SelectTrigger,
   SelectValue,
   SelectContent,
   SelectItem,
-} from "@/app-components/ui/select";
-import { Checkbox } from "@/app-components/ui/checkbox";
-import { Switch } from "@/app-components/ui/switch";
+} from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Switch } from "@/components/ui/switch";
 import Image from "next/image";
-import { useCartStore } from "@/app-stores/cart";
+import { useCartStore } from "@/stores/cart";
 import { formatAmount } from "@/lib/utils";
 import { CreateOrderSchema, CreateOrderFormValues } from "@/lib/schema";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useStylengAuthStore } from "@/app-stores/auth";
+import { useStylengAuthStore } from "@/stores/auth";
 import { useRouter } from "next/navigation";
-import { useModalStore } from "@/app-stores/modal";
+import { useModalStore } from "@/stores/modal";
 import { createOrder, initializePayment, addPromoCode, verifyPayment} from "@/api-services/order";
 import toast from "react-hot-toast";
 export default function CheckoutPage() {

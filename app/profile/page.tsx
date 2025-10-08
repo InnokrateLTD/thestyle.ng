@@ -1,15 +1,15 @@
 "use client";
-import { useStylengAuthStore } from "@/app-stores/auth";
+import { useStylengAuthStore } from "@/stores/auth";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@/app-components/ui/tabs";
-import ProfileDetails from "@/app-components/profile/profile-details";
-import SaveAddresses from "@/app-components/profile/saved-addresses";
-import ResetPassword from "@/app-components/profile/reset-password";
-import OrderList from "@/app-components/profile/order-list";
+} from "@/components/ui/tabs";
+import ProfileDetails from "@/components/profile/profile-details";
+import SaveAddresses from "@/components/profile/saved-addresses";
+import ResetPassword from "@/components/profile/reset-password";
+import OrderList from "@/components/profile/order-list";
 import { cn } from "@/lib/utils";
 
 const Profile = () => {

@@ -1,14 +1,14 @@
 "use client"
-import Search from "@/app-components/search";
+import Search from "@/components/search";
 import { useEffect, Suspense } from "react";
-import { Button } from "@/app-components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Plus, EllipsisVertical } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/app-components/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
 import { useGetSellerReview, deleteReview} from "@/api-services/product";
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";

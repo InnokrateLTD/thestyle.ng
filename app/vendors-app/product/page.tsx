@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, Suspense } from "react";
-import Search from "@/app-components/search";
-import { Button } from "@/app-components/ui/button";
+import Search from "@/components/search";
+import { Button } from "@/components/ui/button";
 import { Plus, EllipsisVertical } from "lucide-react";
-import { Badge } from "@/app-components/ui/badge";
+import { Badge } from "@/components/ui/badge";
 import dynamic from "next/dynamic";
 import {
   DropdownMenu,
@@ -11,13 +11,13 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/app-components/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { useProducts, useCategory, deleteProduct } from "@/api-services/product";
 import { useState } from "react";
-import { useStylengAuthStore } from "@/app-stores/auth";
-import { useModalStore } from "@/app-stores/modal";
+import { useStylengAuthStore } from "@/stores/auth";
+import { useModalStore } from "@/stores/modal";
 const CSVLinkNoSSR = dynamic(() => import("react-csv").then(mod => mod.CSVLink), {
   ssr: false,
 })

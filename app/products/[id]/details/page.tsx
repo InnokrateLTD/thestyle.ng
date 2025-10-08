@@ -1,22 +1,22 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/app-components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectTrigger,
   SelectValue,
   SelectContent,
   SelectItem,
-} from "@/app-components/ui/select";
+} from "@/components/ui/select";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useSingleProduct } from "@/api-services/product";
-import { useModalStore } from "@/app-stores/modal";
-import { useCartStore } from "@/app-stores/cart";
+import { useModalStore } from "@/stores/modal";
+import { useCartStore } from "@/stores/cart";
 import { formatAmount } from "@/lib/utils";
 import { useGetProductReview } from "@/api-services/product";
-import { useStylengAuthStore } from "@/app-stores/auth";
+import { useStylengAuthStore } from "@/stores/auth";
 import {formatDate} from "@/lib/utils"
 export default function ProductCart() {
   const [, /*size,*/ setSize] = useState("");

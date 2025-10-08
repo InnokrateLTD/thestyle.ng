@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Input } from "@/app-components/ui/input";
-import { Button } from "@/app-components/ui/button";
-import { Textarea } from "@/app-components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import { HexColorPicker } from "react-colorful";
 import { ProductFormData, AddProductSchema } from "@/lib/schema";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
@@ -15,10 +15,10 @@ import {
   SelectValue,
   SelectContent,
   SelectItem,
-} from "@/app-components/ui/select";
-import { Label } from "@/app-components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/app-components/ui/radio-group";
-import { Checkbox } from "@/app-components/ui/checkbox";
+} from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
 import Image from "next/image";
 import {
   useCategory,
@@ -29,7 +29,7 @@ import {
 import { Plus, Trash2 } from "lucide-react";
 import { ImageResponse } from "@/interfaces-and-types/product";
 import toast from "react-hot-toast";
-import LoadingDots from "@/app-components/ui/loadingDots";
+import LoadingDots from "@/components/ui/loadingDots";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 

@@ -3,10 +3,10 @@ import { useState, useMemo, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useProducts, useCategory } from "@/api-services/product";
-import ProductCard from "@/app-components/landing-page/product-card";
-import { Button } from "@/app-components/ui/button";
-import Modal from "@/app-components/landing-page/modal";
-import FilterProduct from "@/app-components/product-page/filter-product";
+import ProductCard from "@/components/landing-page/product-card";
+import { Button } from "@/components/ui/button";
+import Modal from "@/components/landing-page/modal";
+import FilterProduct from "@/components/product-page/filter-product";
 import { ProductParams } from "@/interfaces-and-types/product";
 
 const genders = ["men", "women", "kids"];

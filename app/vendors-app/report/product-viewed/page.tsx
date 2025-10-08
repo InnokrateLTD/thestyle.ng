@@ -1,10 +1,10 @@
 "use client"
 import { useState, useEffect, Suspense } from "react";
-import Search from "@/app-components/search";
-import { Button } from "@/app-components/ui/button";
+import Search from "@/components/search";
+import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { DateRange } from "react-day-picker";
-import { DatePickerWithRange } from "@/app-components/ui/date-range";
+import { DatePickerWithRange } from "@/components/ui/date-range";
 import { useGetProductViewed } from "@/api-services/report";
 import { useSearchParams } from "next/navigation";
 import { ProductViewedParams } from "@/interfaces-and-types/product";

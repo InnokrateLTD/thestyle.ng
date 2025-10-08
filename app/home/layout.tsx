@@ -1,9 +1,9 @@
 
 import { inter } from "@/lib/font"
 import "./globals.css";
-import Header from "@/app-components/header";
-import Footer from "@/app-components/footer";
-import NavLinks from "@/app-components/nav-links";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
+import NavLinks from "@/components/nav-links";
 
 
 export default function Layout({
