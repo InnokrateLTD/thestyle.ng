@@ -35,7 +35,7 @@ export interface ProductResponse {
     seller_name: string
     total_stock: number
     stock_status: string
-    is_best_seller: boolean
+    is_best_seller?: boolean
     rating: number
     created_at: string
     short_description: string
