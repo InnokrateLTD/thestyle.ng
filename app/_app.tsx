@@ -1,28 +1,25 @@
 // pages/_app.tsx
-import { SWRConfig } from 'swr';
-import { AppProps } from 'next/app';
-import { apiRequest } from '@/lib/api';
-import SignupForm from '@/app-components/landing-page/signup-form';
-// import SignUp from './ui/SignUp';
+import { SWRConfig } from "swr";
+import { AppProps } from "next/app";
+import { apiRequest } from "@/lib/api";
 
-const fetcher = (url: string) => apiRequest(url, 'GET');
+const fetcher = (url: string) => apiRequest(url, "GET");
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <SWRConfig
       value={{
         fetcher,
         onError: (error) => {
-          console.error('SWR Error:', error);
+          console.error("SWR Error:", error);
         },
-        refreshInterval: 3000, 
+        refreshInterval: 3000,
         dedupingInterval: 2000,
-        revalidateOnFocus: true, 
+        revalidateOnFocus: true,
         revalidateOnReconnect: true,
       }}
     >
-      <SignupForm/>
+      <Component {...pageProps} /> 
     </SWRConfig>
   );
 }
