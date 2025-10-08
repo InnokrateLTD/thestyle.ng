@@ -46,7 +46,7 @@ const Products = () => {
   const { resultIsLoading, result: products } = useProducts(productParams);
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [type, setType] = useState<"filter" | "sort">("filter");
+  const [/*type*/, setType] = useState<"filter" | "sort">("filter");
 
   // build breadcrumb
   const breadcrumb = useMemo(() => {
@@ -119,7 +119,7 @@ const Products = () => {
       )}
 
       <Modal isOpen={isFilterOpen} onClose={() => setIsFilterOpen(false)}>
-        <FilterProduct type={type} />
+        <FilterProduct />
       </Modal>
     </section>
   );
