@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect, Suspense} from "react";
 import Search from "@/app-components/search";
 import { Button } from "@/app-components/ui/button";
 import { Plus } from "lucide-react";
@@ -62,8 +62,6 @@ const Order = () => {
       // eslint-disable-next-line
     }, [searchParams, selectedDateRange?.to]);
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-
     
     <div className="space-y-6 w-full">
       <div className="">
@@ -73,10 +71,9 @@ const Order = () => {
         </p>
       </div>
       <div className="w-full flex justify-between">
-        <div className="flex gap-4">
+        <Suspense fallback={<div>Loading search...</div>}>
           <Search placeholder="Search" />
-          
-        </div>
+        </Suspense>
         <div className="flex gap-4">
           <DatePickerWithRange onSelectDateRange={handleSelectDateRange} />
             <Button
@@ -182,7 +179,7 @@ const Order = () => {
           )}
               </tbody>
             </table>
-    </div></Suspense>
+    </div>
   );
 };
 export default Order;
