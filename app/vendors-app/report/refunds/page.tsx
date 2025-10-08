@@ -1,12 +1,12 @@
 "use client"
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import Search from "@/app-components/search";
 import { Button } from "@/app-components/ui/button";
 import { Plus } from "lucide-react";
 import { DateRange } from "react-day-picker";
 import { DatePickerWithRange } from "@/app-components/ui/date-range";
 import { Badge } from "@/app-components/ui/badge";
-const Refunds = () => {
+const RefundsPage = () => {
     const [/*selectedDateRange*/, setSelectedDateRange] = useState<
     DateRange | undefined
   >();
@@ -95,4 +95,11 @@ const Refunds = () => {
     </div>
   );
 };
-export default Refunds;
+
+export default function Refunds() {
+  return (
+    <Suspense fallback={<div className="p-4 text-gray-500">Loading Refunds...</div>}>
+      <RefundsPage />
+    </Suspense>
+  );
+}
