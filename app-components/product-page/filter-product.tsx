@@ -12,7 +12,7 @@ import { Button } from "../ui/button";
 import { useCategory } from "@/api-services/product";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useModalStore } from "@/app-stores/modal";
-const FilterProductPage = ({ type }: { type?: string }) => {
+const FilterProductPage = ({ type }: { type?: string } = {}) => {
   const [openSection, setOpenSection] = useState<string | null>(
     type === "sort" ? "sort" : null
   );

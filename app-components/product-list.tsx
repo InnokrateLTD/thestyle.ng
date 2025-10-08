@@ -10,7 +10,7 @@ const ProductList = ({title} : {title: string}) => {
   const {/*resultIsLoading,*/ result: products} = useProducts()
  
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [type, setType] = useState('filter')
+  const [/*type*/, setType] = useState('filter')
   return (
     <section className="py-8 space-y-6">
       <div className="flex items-center justify-between">
@@ -55,7 +55,7 @@ const ProductList = ({title} : {title: string}) => {
       </div>
 
       <Modal isOpen={isFilterOpen} onClose={() => setIsFilterOpen(false)}>
-        <FilterProduct type={type}/>
+        <FilterProduct />
       </Modal>
     </section>
   );
